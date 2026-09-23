@@ -1,0 +1,27 @@
+:root {
+  --color-primary:            #16624F;
+  --color-on-primary:         #FFFFFF;
+  --color-primary-container:  #A6F2D8;
+  --color-on-primary-container:#00201A;
+  --color-secondary-container:#CFE9DF;
+  --color-tertiary:           #7A5900;
+  --color-tertiary-container: #FFDF9B;
+  --color-error:              #B3261E;
+  --color-error-container:    #F9DEDC;
+  --color-surface:            #F6FBF8;
+  --color-surface-container:  #EAF1EC;
+  --color-on-surface:         #161D1A;
+  --color-on-surface-variant: #3F4945;
+  --color-outline:            #6F7975;
+  --color-outline-variant:    #BFC9C4;
+
+  --fuente-ui:    "Figtree", system-ui, sans-serif;
+  --fuente-datos: "IBM Plex Mono", monospace;
+
+  --radio-chip:    8px;
+  --radio-tarjeta: 12px;
+  --radio-hoja:    28px;
+  --radio-pildora: 999px;
+
+  --area-tactil-min: 48px;
+}

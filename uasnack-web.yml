@@ -1,0 +1,30 @@
+stages:
+  - deploy
+
+deploy_pwa_estudiante:
+  stage: deploy
+  tags:
+    - home-server
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - cd pwa-estudiante
+    - 'test -f .env.production.local || echo "Aviso: no hay .env.production.local en pwa-estudiante/, el build usara valores por defecto"'
+    - npm ci
+    - npm run build
+    - mkdir -p /srv/apps/uasnack/pwa-estudiante
+    - rsync -a --delete dist/ /srv/apps/uasnack/pwa-estudiante/dist/
+
+deploy_panel:
+  stage: deploy
+  tags:
+    - home-server
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - cd panel
+    - 'test -f .env.production.local || echo "Aviso: no hay .env.production.local en panel/, el build usara valores por defecto"'
+    - npm ci
+    - npm run build
+    - mkdir -p /srv/apps/uasnack/panel
+    - rsync -a --delete dist/ /srv/apps/uasnack/panel/dist/
