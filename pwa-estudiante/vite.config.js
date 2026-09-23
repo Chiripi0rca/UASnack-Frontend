@@ -32,6 +32,14 @@ export default defineConfig({
       workbox: {
         // El shell (JS/CSS/HTML del build) ya queda cache-first vía precache,
         // versionado automáticamente en cada deploy por el hash del build.
+        //
+        // navigateFallbackDenylist: sin esto, el Service Worker (registrado en "/")
+        // intercepta TODAS las navegaciones del dominio, incluyendo /panel/, /api/ y
+        // /app/ (que son de otras apps/servicios detras del mismo nginx) y les sirve
+        // por error el index.html de esta PWA en vez de dejarlas pasar a la red.
+        // (\/|$) al final: cubre tanto "/panel/algo" como "/panel" pelón (sin barra),
+        // que es justo el caso que se colaba antes.
+        navigateFallbackDenylist: [/^\/panel(\/|$)/, /^\/api(\/|$)/, /^\/app(\/|$)/],
         runtimeCaching: [
           {
             // Catálogo: GET /tiendas, /tiendas/{id}/productos, /productos/{id}
