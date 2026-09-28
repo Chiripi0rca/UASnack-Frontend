@@ -1,0 +1,48 @@
+.login-subtitulo {
+  margin: 4px 0 24px;
+  color: var(--color-on-surface-variant);
+}
+
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+.campo__con-accion {
+  position: relative;
+  display: flex;
+}
+
+.campo__con-accion input {
+  flex: 1;
+  min-width: 0;
+  padding-right: 56px;
+}
+
+.campo__accion {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: var(--area-tactil-min);
+  height: var(--area-tactil-min);
+  border: none;
+  border-radius: var(--radio-pildora);
+  background: none;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+}
+
+.campo__accion svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

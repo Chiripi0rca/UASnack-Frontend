@@ -7,6 +7,8 @@ export const obtenerFacultades = () => peticion('/facultades')
 
 export const registrar = (datos) => peticion('/auth/registro', { method: 'POST', body: datos })
 
+export const acceder = (credenciales) => peticion('/auth/login', {method: 'POST', body: credenciales})
+
 export const verificar = (correo, codigo) =>
   peticion('/auth/verificar', {
     method: 'POST',

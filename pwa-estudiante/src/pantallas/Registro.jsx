@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import {  useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   CLAVE_CORREO_POR_VERIFICACION,
@@ -169,6 +169,9 @@ export default function Registro() {
           {registro.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
         </button>
       </form>
+      <p className="acceso__alterno">
+        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+      </p>
     </main>
   )
 }
