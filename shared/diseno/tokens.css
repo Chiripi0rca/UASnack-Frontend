@@ -14,6 +14,8 @@
   --color-on-surface-variant: #3F4945;
   --color-outline:            #6F7975;
   --color-outline-variant:    #BFC9C4;
+  --color-on-error-container: #410E0b;
+  --color-on-texto-deshabilitado: #9AA5A0;
 
   --fuente-ui:    "Figtree", system-ui, sans-serif;
   --fuente-datos: "IBM Plex Mono", monospace;

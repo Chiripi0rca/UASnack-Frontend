@@ -1,0 +1,46 @@
+.pantalla-registro h1 {
+  margin-bottom: 24px;
+}
+
+.formulario-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.casilla-terminos {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-height: var(--area-tactil-min);
+  padding: 12px 0;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.casilla-terminos input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.aviso-pendiente {
+  margin: 0 0 24px;
+  padding: 12px 16px;
+  border-radius: var(--radio-chip);
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.aviso-pendiente strong {
+  overflow-wrap: anywhere;
+}
+
+.aviso-pendiente a {
+  font-weight: 600;
+}

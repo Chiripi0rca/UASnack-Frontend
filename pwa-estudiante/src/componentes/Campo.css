@@ -1,0 +1,44 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campo__etiqueta {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.campo input,
+.campo select {
+  height: 56px;
+  padding: 0 16px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-chip);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: 400 16px var(--fuente-ui);
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: 2px solid var(--color-primary);
+  border-color: transparent;
+}
+
+.campo input:read-only {
+  background: var(--color-surface-container);
+}
+
+.campo--error input,
+.campo--error select {
+  border-color: var(--color-error);
+}
+
+.campo__error {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-error);
+}
