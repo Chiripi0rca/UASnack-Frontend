@@ -1,4 +1,4 @@
-import { peticion } from './cliente.js'
+import { peticion } from '@shared/api/cliente.js'
 
 export const CLAVE_CORREO_POR_VERIFICACION = 'correoPorVerificar'
 export const CLAVE_REENVIO_DISPONIBLE_EN = 'reenvioDisponibleEn'

@@ -7,7 +7,7 @@ import {
   obtenerFacultades,
   registrar,
 } from '../api/auth'
-import Campo from '../componentes/Campo'
+import Campo from '@shared/componentes/CampoTexto.jsx'
 import { primerError } from '../utilidades/errores.js'
 import { soloNumero } from '../utilidades/soloNumero.js'
 import './Registro.css'

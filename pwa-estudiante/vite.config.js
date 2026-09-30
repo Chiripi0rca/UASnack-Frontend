@@ -69,6 +69,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@shared': fileURLToPath(new URL('../shared', import.meta.url)),
     },
