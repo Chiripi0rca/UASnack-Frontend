@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { acceder, CLAVE_CORREO_POR_VERIFICACION } from "../api/auth.js";
-import Campo from "../componentes/Campo.jsx";
+import Campo from "@shared/componentes/CampoTexto.jsx";
 import IconoOjo from "../componentes/IconoOjo.jsx";
 import { useCuentaRegresiva } from '../hooks/useCuentaRegresiva.js';
 import { primerError } from '../utilidades/errores.js';

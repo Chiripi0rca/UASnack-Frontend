@@ -7,6 +7,7 @@ export default defineConfig({
   base: '/panel/',
   plugins: [react()],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@shared': fileURLToPath(new URL('../shared', import.meta.url)),
     },

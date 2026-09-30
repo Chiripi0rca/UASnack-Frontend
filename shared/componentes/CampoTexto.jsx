@@ -1,4 +1,4 @@
-import './Campo.css'
+import './CampoTexto.css'
 
 export default function Campo({ etiqueta, error, children }) {
   return (
