@@ -1,3 +1,5 @@
+import { expirarSesion, leerToken } from '../auth/almacenSesion.js'
+
 const URL_API = import.meta.env.VITE_API_URL
 
 export class ErrorApi extends Error {
@@ -14,6 +16,8 @@ export class ErrorApi extends Error {
 }
 
 export async function peticion(ruta, { method = 'GET', body } = {}) {
+  // Si hay sesión guardada, cada petición lleva su token para que auth:sanctum sepa quién es.
+  const token = leerToken()
   let respuesta
   try {
     respuesta = await fetch(`${URL_API}${ruta}`, {
@@ -21,6 +25,7 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
       headers: {
         Accept: 'application/json',
         ...(body && { 'Content-Type': 'application/json' }),
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
       body: body ? JSON.stringify(body) : undefined,
     })
@@ -34,6 +39,10 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
   if (respuesta.status === 204) return null
 
   const datos = await respuesta.json().catch(() => null)
+
+  // 401 con token = la sesión venció o se revocó: se borra y RutaProtegida manda al login.
+  // Sin token no se toca nada: es el 401 del login (CREDENCIALES_INVALIDAS) y la pantalla lo muestra.
+  if (respuesta.status === 401 && token) expirarSesion()
 
   if (!respuesta.ok) {
     throw new ErrorApi({
