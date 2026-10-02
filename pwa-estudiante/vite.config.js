@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'UASnack',
         short_name: 'UASnack',
         description: 'Pide en las tiendas de tu facultad y pasa a retirar sin fila',
-        theme_color: '#16624F',
-        background_color: '#16624F',
+        theme_color: '#3F7B39',
+        background_color: '#3F7B39',
         display: 'standalone',
         start_url: '/',
         icons: [
