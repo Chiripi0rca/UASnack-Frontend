@@ -1,6 +1,7 @@
+import { useSesion } from '@shared/auth/SesionContext.jsx'
+import { useMutation } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
 import {
   CLAVE_CORREO_POR_VERIFICACION,
   CLAVE_REENVIO_DISPONIBLE_EN,
@@ -20,6 +21,7 @@ const leerReenvioDisponibleEn = () =>
 
 export default function Verificacion() {
   const navegar = useNavigate()
+   const { iniciarSesion } = useSesion()
   const [correo] = useState(() => sessionStorage.getItem(CLAVE_CORREO_POR_VERIFICACION))
 
   const [digitos, setDigitos] = useState(codigoVacio)
@@ -34,7 +36,8 @@ export default function Verificacion() {
 
   const verificacion = useMutation({
     mutationFn: (codigo) => verificar(correo, codigo),
-    onSuccess: () => {
+    onSuccess: (respuesta) => {
+      iniciarSesion(respuesta.token, respuesta.usuario)
       sessionStorage.removeItem(CLAVE_CORREO_POR_VERIFICACION)
       sessionStorage.removeItem(CLAVE_REENVIO_DISPONIBLE_EN)
       navegar('/tiendas', { replace: true })
