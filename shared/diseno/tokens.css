@@ -1,21 +1,21 @@
 :root {
-  --color-primary:            #16624F;
+  --color-primary:            #3F7B39;
   --color-on-primary:         #FFFFFF;
-  --color-primary-container:  #A6F2D8;
-  --color-on-primary-container:#00201A;
-  --color-secondary-container:#CFE9DF;
-  --color-tertiary:           #7A5900;
-  --color-tertiary-container: #FFDF9B;
+  --color-primary-container:  #DAFBD5;
+  --color-on-primary-container:#0F2A0C;
+  --color-secondary-container:#B9B1FC;
+  --color-tertiary:           #816553;
+  --color-tertiary-container: #FCC6A2;
   --color-error:              #B3261E;
   --color-error-container:    #F9DEDC;
-  --color-surface:            #F6FBF8;
-  --color-surface-container:  #EAF1EC;
-  --color-on-surface:         #161D1A;
-  --color-on-surface-variant: #3F4945;
-  --color-outline:            #6F7975;
-  --color-outline-variant:    #BFC9C4;
+  --color-surface:            #F8FAF7;
+  --color-surface-container:  #ECF0EB;
+  --color-on-surface:         #1B2328;
+  --color-on-surface-variant: #766A63;
+  --color-outline:            #7D7169;
+  --color-outline-variant:    #C9D3C7;
   --color-on-error-container: #410E0b;
-  --color-on-texto-deshabilitado: #9AA5A0;
+  --color-on-texto-deshabilitado: #959E94;
 
   --fuente-ui:    "Figtree", system-ui, sans-serif;
   --fuente-datos: "IBM Plex Mono", monospace;
