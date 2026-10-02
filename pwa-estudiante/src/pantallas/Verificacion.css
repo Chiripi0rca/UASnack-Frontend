@@ -48,6 +48,12 @@
   color: var(--color-on-surface-variant);
 }
 
+.verificacion__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .verificacion__reenviar {
   display: block;
   margin: 16px auto 0;

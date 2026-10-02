@@ -1,4 +1,5 @@
 import { useSesion } from '@shared/auth/SesionContext.jsx'
+import BotonPrincipal from '@shared/componentes/BotonPrincipal.jsx'
 import { useMutation } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -104,6 +105,7 @@ export default function Verificacion() {
   if (!correo) return <Navigate to="/registro" replace />
 
   const error = verificacion.error ?? reenvio.error
+  const codigo = digitos.join('')
 
   return (
     <main className="pantalla pantalla-verificacion">
@@ -138,11 +140,21 @@ export default function Verificacion() {
         {verificacion.isPending ? 'Verificando…' : ''}
       </p>
 
-      {error && (
-        <p role="alert" className="error-general">
-          {error.mensaje}
-        </p>
-      )}
+      <div className="verificacion__acciones">
+        {error && (
+          <p role="alert" className="error-general">
+            {error.mensaje}
+          </p>
+        )}
+
+        {/* El código se envía solo al llenar las casillas; el botón queda como respaldo */}
+        <BotonPrincipal
+          texto="Verificar"
+          cargando={verificacion.isPending}
+          disabled={codigo.length < CODIGO}
+          onClick={() => verificacion.mutate(codigo)}
+        />
+      </div>
 
       <button
         type="button"
