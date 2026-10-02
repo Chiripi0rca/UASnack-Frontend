@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { acceder, CLAVE_CORREO_POR_VERIFICACION } from "../api/auth.js";
 import { useSesion } from "@shared/auth/SesionContext.jsx";
+import BotonPrincipal from "@shared/componentes/BotonPrincipal.jsx";
 import Campo from "@shared/componentes/CampoTexto.jsx";
 import IconoOjo from "../componentes/IconoOjo.jsx";
 import { useCuentaRegresiva } from '../hooks/useCuentaRegresiva.js';
@@ -108,9 +109,12 @@ export default function Login() {
                     </p>
                 )} 
 
-                <button type="submit" className="boton-principal" disabled={bloqueado || acceso.isPending}>
-                    {acceso.isPending ? 'Entrando...' : 'Entrar'}
-                </button>
+                <BotonPrincipal
+                    type="submit"
+                    texto={acceso.isPending ? 'Entrando...' : 'Entrar'}
+                    cargando={acceso.isPending}
+                    disabled={bloqueado}
+                />
             </form>
 
             <p className="acceso__alterno">

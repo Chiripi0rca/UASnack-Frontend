@@ -7,6 +7,7 @@ import {
   obtenerFacultades,
   registrar,
 } from '../api/auth'
+import BotonPrincipal from '@shared/componentes/BotonPrincipal.jsx'
 import Campo from '@shared/componentes/CampoTexto.jsx'
 import { primerError } from '../utilidades/errores.js'
 import { soloNumero } from '../utilidades/soloNumero.js'
@@ -161,13 +162,12 @@ export default function Registro() {
           </p>
         )}
 
-        <button
+        <BotonPrincipal
           type="submit"
-          className="boton-principal"
-          disabled={!aceptoTerminos || registro.isPending}
-        >
-          {registro.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
-        </button>
+          texto={registro.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
+          cargando={registro.isPending}
+          disabled={!aceptoTerminos}
+        />
       </form>
       <p className="acceso__alterno">
         ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>

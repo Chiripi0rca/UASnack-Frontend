@@ -1,0 +1,55 @@
+.boton-principal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: var(--area-tactil-min);
+  padding: 0 24px;
+  border: none;
+  border-radius: var(--radio-pildora);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: 600 14px var(--fuente-ui);
+  cursor: pointer;
+  transition: transform 80ms ease;
+}
+
+.boton-principal:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.boton-principal:disabled {
+  background: var(--color-surface-container);
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+/* Mientras carga también está deshabilitado, pero conserva el color para no parecer bloqueado */
+.boton-principal[aria-busy='true'] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  cursor: progress;
+}
+
+/* margin-left: auto manda el importe a la derecha y deja el texto a la izquierda */
+.boton-principal__importe {
+  margin-left: auto;
+  font-family: var(--fuente-datos);
+}
+
+.boton-principal__indicador {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: boton-principal-girar 700ms linear infinite;
+}
+
+@keyframes boton-principal-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
