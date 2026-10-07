@@ -68,6 +68,16 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    port: 5173,
+    strictPort: true,
+    // #223: el panel se abre desde aquí (localhost:5173/panel/). Mismo origen = mismo
+    // localStorage, así el panel ve la sesión iniciada en el login de la PWA.
+    // ws: true deja pasar la recarga en caliente (HMR) del panel.
+    proxy: {
+      '/panel': { target: 'http://localhost:5174', ws: true },
+    },
+  },
   resolve: {
     // shared/ no tiene node_modules propio: así sus imports usan la misma copia que la app.
     // react-router-dom tiene que ser la misma copia o RutaProtegida no encuentra el router.
