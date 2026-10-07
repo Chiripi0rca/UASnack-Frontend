@@ -24,7 +24,7 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
       method,
       headers: {
         Accept: 'application/json',
-        ...(body && { 'Content-Type': 'application/json' }),
+        ...(body && { 'Content-Type': 'application/json; charset=UTF-8' }),
         ...(token && { Authorization: `Bearer ${token}` }),
       },
       body: body ? JSON.stringify(body) : undefined,
@@ -33,7 +33,7 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
     throw new ErrorApi({
       status: 0,
       codigo: 'SIN_CONEXION',
-      mensaje: 'No hay conexion. Revisa tu internet e intenta de nuevo.',
+      mensaje: 'No hay conexión. Revisa tu internet e intenta de nuevo.',
     })
   }
   if (respuesta.status === 204) return null
@@ -48,7 +48,7 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
     throw new ErrorApi({
       status: respuesta.status,
       codigo: datos?.error?.codigo ?? 'ERROR_DESCONOCIDO',
-      mensaje: datos?.error?.mensaje ?? 'Ocurrio un error inesperado.',
+      mensaje: datos?.error?.mensaje ?? 'Ocurrió un error inesperado.',
       campos: datos?.error?.campos ?? {},
       reintentarEn: Number(respuesta.headers.get('Retry-After')) || null,
       // Lee el header X-RateLimit-Remaining que manda el backend.
