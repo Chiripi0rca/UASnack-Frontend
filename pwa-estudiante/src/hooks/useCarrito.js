@@ -37,10 +37,11 @@ function suscribir(avisar) {
 
 // Mismo producto con los mismos extras y quitables = misma línea (solo se suma la cantidad).
 function claveDeLinea(idProducto, extras, quitables) {
+  // sort() sin comparador ordena como texto: sirve igual si los ids son números o texto.
   const ids = (lista) =>
     lista
       .map((opcion) => opcion.id)
-      .sort((a, b) => a - b)
+      .sort()
       .join(',')
   return `${idProducto}|${ids(extras)}|${ids(quitables)}`
 }
