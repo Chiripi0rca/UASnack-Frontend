@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { destinoPorRol } from "@shared/auth/destinoPorRol.js";
 import { acceder, CLAVE_CORREO_POR_VERIFICACION } from "../api/auth.js";
 import { useSesion } from "@shared/auth/SesionContext.jsx";
 import BotonPrincipal from "@shared/componentes/BotonPrincipal.jsx";
@@ -14,21 +15,19 @@ import './Login.css';
 
 export default function Login() {
     const navegar = useNavigate ()
-    const ubicacion = useLocation ()
-    const { haySesion, iniciarSesion } = useSesion ()
+    
+    const { haySesion, usuario, iniciarSesion } = useSesion();
     const [credenciales , setCredenciales] = useState ({ correo_institucional: '', password: ''})
     const [verPassword, setVerPassword] = useState (false)
     const [segundosBloque , programarFinBloqueo] = useCuentaRegresiva(0)
 
-    // Pantalla a la que se quería entrar antes de que RutaProtegida mandara aquí; si no hay, Tiendas.
-    const destino = ubicacion.state?.desde?.pathname ?? '/tiendas'
+
 
     const acceso = useMutation ({
         mutationFn: acceder,
         // La respuesta trae { token, usuario }: se guarda la sesión antes de navegar a una ruta protegida.
         onSuccess: (respuesta) => {
-            iniciarSesion(respuesta.token, respuesta.usuario)
-            navegar(destino, {replace: true})
+        iniciarSesion(respuesta.token, respuesta.usuario);
         },
         onError: (error, datos) =>{
             if (error.codigo === 'CORREO_NO_VERIFICADO') {
@@ -39,6 +38,27 @@ export default function Login() {
             if (error.reintentarEn) programarFinBloqueo(Date.now() + error.reintentarEn * 1000)
         },
     })
+
+    
+   
+
+useEffect(() => {
+    if (!haySesion || acceso.isPending || !usuario?.rol) {
+        return;
+    }
+
+    const ruta = destinoPorRol(usuario.rol);
+
+    if (ruta.startsWith("/panel")) {
+        window.location.assign(ruta);
+        return;
+    }
+
+    navegar(ruta, { replace: true });
+}, [haySesion, usuario, acceso.isPending, navegar]);
+
+
+
 
     const bloqueado = segundosBloque > 0
     const errores = acceso.error?.campos ?? {}
@@ -55,9 +75,7 @@ export default function Login() {
         acceso.mutate(credenciales)
     }
 
-    // Si ya hay sesión guardada no tiene caso mostrar el login: entra directo.
-    // Mientras se envía el formulario no se redirige aquí, eso lo hace onSuccess.
-    if (haySesion && !acceso.isPending) return <Navigate to={destino} replace />
+  
 
     return (
         <main className="pantalla pantalla-login">
