@@ -1,14 +1,36 @@
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useSesion } from './SesionContext.jsx'
 
-// ESQUELETO (Sprint 02). Lo completa la tarea #200 (y lo usa #199 para el admin).
-// Ruta padre del panel que deja pasar solo a un rol:
-//   <Route element={<RutaPorRol rol="administrador" />}> ...vistas del admin... </Route>
-//
-// Pendiente #200:
-//   - sin sesión: mandar al login de la PWA con window.location.assign('/login')
-//   - con otro rol: mostrar "No tienes acceso" y no dibujar el panel
-// Por ahora deja pasar a todos.
-// eslint-disable-next-line no-unused-vars
 export default function RutaPorRol({ rol }) {
+  const { haySesion, usuario } = useSesion()
+
+  useEffect(() => {
+    if (!haySesion) {
+      const loginUrl = import.meta.env.VITE_PWA_LOGIN_URL
+
+      if (loginUrl) {
+        window.location.replace(loginUrl)
+      } else {
+        console.error(
+          'Falta configurar VITE_PWA_LOGIN_URL en el archivo de entorno.'
+        )
+      }
+    }
+  }, [haySesion])
+
+  if (!haySesion) {
+    return null
+  }
+
+  if (usuario?.rol !== rol) {
+    return (
+      <main>
+        <h1>No tienes acceso</h1>
+        <p>No tienes permisos para acceder a este panel.</p>
+      </main>
+    )
+  }
+
   return <Outlet />
 }
