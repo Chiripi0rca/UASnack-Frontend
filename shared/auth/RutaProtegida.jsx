@@ -6,7 +6,7 @@ import { useSesion } from './SesionContext.jsx'
 // Guarda en "desde" la pantalla que se quería abrir, para regresar ahí después de entrar.
 export default function RutaProtegida({ redirigirA = '/login' }) {
   const { haySesion } = useSesion()
-  
+  const ubicacion = useLocation()
 
   if (!haySesion) return <Navigate to={redirigirA} replace state={{ desde: ubicacion }} />
 
