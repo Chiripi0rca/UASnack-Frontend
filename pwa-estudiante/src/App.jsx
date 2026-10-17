@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import RutaProtegida from '@shared/auth/RutaProtegida.jsx'
 import LayoutConBarra from './componentes/LayoutConBarra.jsx'
+import Carrito from './pantallas/Carrito.jsx'
 import Catalogo from './pantallas/Catalogo.jsx'
 import DetalleProducto from './pantallas/DetalleProducto.jsx'
 import Login from './pantallas/Login.jsx'
@@ -21,7 +22,7 @@ export default function App(){
           <Route path="/tiendas" element={<Tiendas/>}/>
           <Route path="/tiendas/:idTienda" element={<Catalogo/>}/>
           <Route path="/productos/:idProducto" element={<DetalleProducto/>}/>
-          {/* #168: <Route path="/carrito" element={<Carrito/>}/> */}
+          <Route path="/carrito" element={<Carrito/>}/>
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace/>}/>

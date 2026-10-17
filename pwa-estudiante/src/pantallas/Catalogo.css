@@ -73,6 +73,26 @@
   font-weight: 600;
 }
 
+/* "Ver carrito": flotante, arriba de la barra inferior (#168) */
+.catalogo__ver-carrito {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 448px;
+  min-height: 56px;
+  margin: 0 auto;
+  border-radius: var(--radio-pildora);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 /* Agotado: 45 % de opacidad, con etiqueta, y nunca se oculta */
 .tarjeta-producto--agotado {
   opacity: 0.45;

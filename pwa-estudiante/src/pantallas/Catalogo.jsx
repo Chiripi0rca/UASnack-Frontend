@@ -6,6 +6,7 @@ import EstadoCarga from '@shared/componentes/EstadoCarga.jsx'
 import EstadoError from '@shared/componentes/EstadoError.jsx'
 import EstadoVacio from '@shared/componentes/EstadoVacio.jsx'
 import { formatearPrecio } from '@shared/utilidades/formatearPrecio.js'
+import { useCarrito } from '../hooks/useCarrito.js'
 import { useCatalogo } from '../hooks/useCatalogo.js'
 import { useTiendas } from '../hooks/useTiendas.js'
 import './Catalogo.css'
@@ -25,6 +26,10 @@ export default function Catalogo() {
   // El nombre de la tienda sale de la caché de GET /tiendas (ya se cargó en la pantalla anterior)
   const { datos: tiendas } = useTiendas()
   const tienda = tiendas?.find((t) => String(t.id) === idTienda)
+
+  // Cuántos artículos hay en el carrito, para el botón "Ver carrito" (#168)
+  const { lineas } = useCarrito()
+  const articulos = lineas.reduce((suma, linea) => suma + linea.cantidad, 0)
 
   // Solo las categorías que de verdad tiene esta tienda
   const categorias = [...new Set((todos ?? []).map((p) => p.id_categoria))].sort((a, b) => a - b)
@@ -65,6 +70,13 @@ export default function Catalogo() {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Solo aparece si el carrito tiene algo */}
+      {articulos > 0 && (
+        <Link className="catalogo__ver-carrito" to="/carrito">
+          Ver carrito · <span className="mono">{articulos}</span>
+        </Link>
       )}
     </main>
   )
