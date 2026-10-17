@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import RutaProtegida from '@shared/auth/RutaProtegida.jsx'
 import LayoutConBarra from './componentes/LayoutConBarra.jsx'
+import Catalogo from './pantallas/Catalogo.jsx'
+import DetalleProducto from './pantallas/DetalleProducto.jsx'
 import Login from './pantallas/Login.jsx'
 import Registro from './pantallas/Registro.jsx'
 import Tiendas from './pantallas/Tiendas.jsx'
@@ -17,8 +19,8 @@ export default function App(){
         {/* Pantallas con barra de navegación inferior (#227). Cada pantalla nueva agrega UNA línea aquí. */}
         <Route element={<LayoutConBarra/>}>
           <Route path="/tiendas" element={<Tiendas/>}/>
-          {/* #47:  <Route path="/tiendas/:idTienda" element={<Catalogo/>}/> */}
-          {/* #50:  <Route path="/productos/:idProducto" element={<DetalleProducto/>}/> */}
+          <Route path="/tiendas/:idTienda" element={<Catalogo/>}/>
+          <Route path="/productos/:idProducto" element={<DetalleProducto/>}/>
           {/* #168: <Route path="/carrito" element={<Carrito/>}/> */}
         </Route>
       </Route>

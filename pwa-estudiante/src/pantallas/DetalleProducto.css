@@ -1,0 +1,75 @@
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detalle__volver {
+  align-self: flex-start;
+  padding: 0;
+}
+
+.detalle__foto {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radio-tarjeta);
+  object-fit: cover;
+}
+
+.detalle__descripcion,
+.detalle__precio {
+  margin: 0;
+}
+
+.detalle__descripcion {
+  color: var(--color-on-surface-variant);
+}
+
+.detalle__grupo h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.detalle__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detalle__cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.detalle__cantidad button {
+  width: var(--area-tactil-min);
+  height: var(--area-tactil-min);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-pildora);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.detalle__cantidad button:disabled {
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+.detalle__aviso {
+  padding: 12px 16px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-tertiary-container);
+}
+
+.detalle__aviso p {
+  margin: 0;
+}
+
+.detalle__aviso-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
