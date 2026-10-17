@@ -1,0 +1,84 @@
+/* Dos columnas: barra lateral fija de 240 px y el contenido */
+.layout-tienda {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.layout-tienda__lateral {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100vh;
+  padding: 24px 12px;
+  background: var(--color-surface-container);
+  border-right: 1px solid var(--color-outline-variant);
+}
+
+.layout-tienda__marca {
+  margin: 0 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.layout-tienda__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.destino {
+  display: flex;
+  align-items: center;
+  min-height: var(--area-tactil-min);
+  padding: 0 16px;
+  border-radius: var(--radio-pildora);
+  color: var(--color-on-surface);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.destino:hover:not(.destino--pendiente) {
+  background: var(--color-outline-variant);
+}
+
+/* Activo: pastilla primary container, igual que la barra de la PWA */
+.destino.activo {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.destino--pendiente {
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+.interruptor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--area-tactil-min);
+  padding: 0 16px;
+  font-size: 14px;
+  color: var(--color-on-texto-deshabilitado);
+}
+
+.layout-tienda__usuario {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.layout-tienda__usuario .boton-texto {
+  align-self: flex-start;
+  padding: 0;
+}
+
+.layout-tienda__contenido {
+  min-width: 0;
+  padding: 32px;
+}

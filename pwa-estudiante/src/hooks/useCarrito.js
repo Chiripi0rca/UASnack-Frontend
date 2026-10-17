@@ -86,10 +86,21 @@ export function useCarrito() {
     guardarLineas([])
   }
 
+  // Cambia la cantidad de una línea (pantalla de Carrito, #168). 0 o menos la quita, igual que
+  // cambiarCantidad en Android. No revisa existencias: pueden haber cambiado desde el catálogo,
+  // y el servidor las revisa al crear el pedido.
+  function cambiarCantidad(clave, cantidad) {
+    if (cantidad <= 0) {
+      quitar(clave)
+      return
+    }
+    guardarLineas(lineas.map((linea) => (linea.clave === clave ? { ...linea, cantidad } : linea)))
+  }
+
   const totalLocal = lineasActuales.reduce((total, linea) => {
     const precioExtras = linea.extras.reduce((suma, extra) => suma + Number(extra.precio ?? 0), 0)
     return total + (linea.precio + precioExtras) * linea.cantidad
   }, 0)
 
-  return { lineas: lineasActuales, agregar, quitar, vaciar, totalLocal }
+  return { lineas: lineasActuales, agregar, quitar, vaciar, cambiarCantidad, totalLocal }
 }
