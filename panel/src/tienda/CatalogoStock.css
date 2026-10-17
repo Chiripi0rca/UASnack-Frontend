@@ -1,0 +1,103 @@
+.catalogo-stock__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.catalogo-stock__encabezado h1 {
+  margin: 0;
+}
+
+.catalogo-stock__tabla {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.catalogo-stock__tabla th,
+.catalogo-stock__tabla td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.catalogo-stock__tabla th {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+/* Stock bajo en ámbar, cero en rojo */
+.fila-producto--bajo {
+  background: var(--color-tertiary-container);
+}
+
+.fila-producto--cero {
+  background: var(--color-error-container);
+}
+
+.fila-producto__stock {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fila-producto__stock input {
+  width: 96px;
+  height: var(--area-tactil-min);
+  padding: 0 8px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-chip);
+  background: var(--color-surface);
+  font: 400 16px var(--fuente-datos);
+}
+
+.fila-producto__error {
+  display: block;
+  font-size: 12px;
+  color: var(--color-error);
+}
+
+.formulario-producto {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 720px;
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radio-tarjeta);
+}
+
+.formulario-producto h2,
+.formulario-producto .error-general,
+.formulario-producto__acciones {
+  grid-column: 1 / -1;
+}
+
+.formulario-producto h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.formulario-producto__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.formulario-producto__acciones .boton-principal {
+  width: auto;
+}
+
+/* Texto solo para lectores de pantalla */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
