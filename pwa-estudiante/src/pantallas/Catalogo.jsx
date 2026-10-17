@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { nombreCategoria } from '@shared/catalogo/categorias.js'
+import ChipOpcion from '@shared/componentes/ChipOpcion.jsx'
 import EstadoCarga from '@shared/componentes/EstadoCarga.jsx'
 import EstadoError from '@shared/componentes/EstadoError.jsx'
 import EstadoVacio from '@shared/componentes/EstadoVacio.jsx'
@@ -38,13 +39,9 @@ export default function Catalogo() {
       {/* Filtro por categoría. Chip activo = primary container (Anexo B), no solo un borde. */}
       {categorias.length > 1 && (
         <div className="catalogo__categorias" role="group" aria-label="Categorías">
-          <BotonCategoria
-            texto="Todo"
-            activo={idCategoria === null}
-            onClick={() => setIdCategoria(null)}
-          />
+          <ChipOpcion texto="Todo" activo={idCategoria === null} onClick={() => setIdCategoria(null)} />
           {categorias.map((id) => (
-            <BotonCategoria
+            <ChipOpcion
               key={id}
               texto={nombreCategoria(id)}
               activo={idCategoria === id}
@@ -70,19 +67,6 @@ export default function Catalogo() {
         </ul>
       )}
     </main>
-  )
-}
-
-function BotonCategoria({ texto, activo, onClick }) {
-  return (
-    <button
-      type="button"
-      className={activo ? 'catalogo__chip activo' : 'catalogo__chip'}
-      aria-pressed={activo}
-      onClick={onClick}
-    >
-      {texto}
-    </button>
   )
 }
 
