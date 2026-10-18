@@ -2,8 +2,7 @@ import { NavLink } from 'react-router-dom'
 import './BarraNavegacion.css'
 
 // Barra de navegación inferior de la PWA (#227). Mismos 4 destinos, orden y textos que Android (#229).
-// Pedidos, Pagos y Perfil todavía no tienen pantalla: mientras no exista su ruta en App.jsx,
-// tocarlos regresa a Tiendas (la ruta "*" manda al login y el login, con sesión, manda a /tiendas).
+// Pedidos, Pagos y Perfil todavía abren PantallaPendiente (ver App.jsx), igual que en Android.
 const DESTINOS = [
   { ruta: '/tiendas', texto: 'Tiendas', icono: IconoTienda },
   { ruta: '/pedidos', texto: 'Pedidos', icono: IconoPedidos },
