@@ -1,3 +1,4 @@
+````jsx
 import { createContext, useContext, useEffect, useState } from 'react'
 import { peticion } from '../api/cliente.js'
 import { alExpirarSesion, borrarSesion, guardarSesion, leerSesion } from './almacenSesion.js'
@@ -20,6 +21,17 @@ export function SesionProvider({ children }) {
     setSesion(nueva)
   }
 
+  // Reemplaza los datos del usuario con los que acaba de mandar el servidor (GET /auth/yo),
+  // conservando el token. Así un cambio de rol hecho por el admin se nota sin volver a iniciar sesión.
+  function actualizarUsuario(usuario) {
+    setSesion((actual) => {
+      if (!actual?.token) return actual
+      const nueva = { ...actual, usuario }
+      guardarSesion(nueva)
+      return nueva
+    })
+  }
+
   // Revoca el token en el servidor y limpia la sesión local. Si el servidor no responde
   // (sin señal, token ya vencido) se cierra igual: el usuario pidió salir.
   async function cerrarSesion() {
@@ -37,6 +49,7 @@ export function SesionProvider({ children }) {
     token: sesion?.token ?? null,
     haySesion: Boolean(sesion?.token),
     iniciarSesion,
+    actualizarUsuario,
     cerrarSesion,
   }
 
