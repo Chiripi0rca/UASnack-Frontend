@@ -5,11 +5,13 @@ import EstadoError from '@shared/componentes/EstadoError.jsx'
 import EstadoVacio from '@shared/componentes/EstadoVacio.jsx'
 import { actualizarTienda, CLAVE_TIENDAS, obtenerTiendas } from '../api/tiendasAdmin.js'
 import FormularioTienda from './FormularioTienda.jsx'
+import SelectorEncargado from './SelectorEncargado.jsx'
 import './Tiendas.css'
 
 // Vista "Tiendas" del administrador (#103). GET /admin/tiendas.
 // - Lista las tiendas de su facultad, activas y de baja.
 // - Alta y edición en el formulario; baja y reactivación en la misma fila.
+// - Asignar o cambiar el encargado por correo con el selector (#164).
 // - La administración NO ve ventas ni demanda: aquí solo hay datos de operación.
 // Clave de caché: CLAVE_TIENDAS = ['admin', 'tiendas'] (general → particular).
 
@@ -18,16 +20,24 @@ export default function Tiendas() {
   const tiendas = consulta.data?.datos
   // null = cerrado · { tienda: null } = nueva · { tienda } = editar
   const [formulario, setFormulario] = useState(null)
+  // Tienda a la que se le está eligiendo encargado, o null. Solo un panel abierto a la vez.
+  const [selector, setSelector] = useState(null)
+
+  function abrirFormulario(tienda) {
+    setSelector(null)
+    setFormulario({ tienda })
+  }
+
+  function abrirSelector(tienda) {
+    setFormulario(null)
+    setSelector(tienda)
+  }
 
   return (
     <section>
       <div className="tiendas__encabezado">
         <h1>Tiendas</h1>
-        <button
-          type="button"
-          className="boton-texto"
-          onClick={() => setFormulario({ tienda: null })}
-        >
+        <button type="button" className="boton-texto" onClick={() => abrirFormulario(null)}>
           + Nueva tienda
         </button>
       </div>
@@ -39,6 +49,10 @@ export default function Tiendas() {
           tienda={formulario.tienda}
           alCerrar={() => setFormulario(null)}
         />
+      )}
+
+      {selector && (
+        <SelectorEncargado key={selector.id} tienda={selector} alCerrar={() => setSelector(null)} />
       )}
 
       {consulta.isPending && <EstadoCarga mensaje="Cargando tiendas…" />}
@@ -65,7 +79,8 @@ export default function Tiendas() {
               <FilaTienda
                 key={tienda.id}
                 tienda={tienda}
-                alEditar={() => setFormulario({ tienda })}
+                alEditar={() => abrirFormulario(tienda)}
+                alAsignar={() => abrirSelector(tienda)}
               />
             ))}
           </tbody>
@@ -75,7 +90,7 @@ export default function Tiendas() {
   )
 }
 
-function FilaTienda({ tienda, alEditar }) {
+function FilaTienda({ tienda, alEditar, alAsignar }) {
   const clienteQuery = useQueryClient()
 
   // Dar de baja o reactivar. Se refresca la lista desde el servidor: nunca se muestra
@@ -124,6 +139,9 @@ function FilaTienda({ tienda, alEditar }) {
         <div className="fila-tienda__acciones">
           <button type="button" className="boton-texto" onClick={alEditar}>
             Editar
+          </button>
+          <button type="button" className="boton-texto" onClick={alAsignar}>
+            {tienda.encargado ? 'Cambiar encargado' : 'Asignar encargado'}
           </button>
           <button
             type="button"

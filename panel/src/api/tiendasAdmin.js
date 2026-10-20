@@ -13,3 +13,16 @@ export const crearTienda = (datos) => peticion('/admin/tiendas', { method: 'POST
 // Solo cambia lo que se manda. { activa: false } da de baja la tienda; { activa: true } la reactiva.
 export const actualizarTienda = (id, datos) =>
   peticion(`/admin/tiendas/${id}`, { method: 'PATCH', body: datos })
+
+// #104: a quién se va a asignar, ANTES de guardar. Responde nombre, correo, rol, tienda actual,
+// puede_ser_encargado y, si no se puede, motivo { codigo, mensaje }. 404 si el correo no existe.
+export const buscarUsuario = (correo, idTienda) =>
+  peticion(`/admin/usuarios/buscar?${new URLSearchParams({ correo, id_tienda: String(idTienda) })}`)
+
+// #104: asigna (o cambia) el encargado por correo. El anterior vuelve a ser "usuario".
+// Responde la tienda con la misma forma que la lista.
+export const asignarEncargado = (idTienda, correo) =>
+  peticion(`/admin/tiendas/${idTienda}/encargado`, {
+    method: 'PATCH',
+    body: { correo_institucional: correo },
+  })
