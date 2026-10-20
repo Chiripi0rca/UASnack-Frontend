@@ -1,0 +1,113 @@
+.tiendas__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tiendas__encabezado h1 {
+  margin: 0;
+}
+
+.tiendas__tabla {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.tiendas__tabla th,
+.tiendas__tabla td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.tiendas__tabla th {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+/* Una tienda de baja se ve atenuada, pero sigue en la lista para poder reactivarla */
+.fila-tienda--baja td:not(:last-child) {
+  color: var(--color-on-texto-deshabilitado);
+}
+
+.fila-tienda__nombre {
+  display: block;
+  font-weight: 600;
+}
+
+.fila-tienda__detalle {
+  display: block;
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.fila-tienda__sin-asignar {
+  font-style: italic;
+  color: var(--color-on-surface-variant);
+}
+
+.fila-tienda__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.fila-tienda__error {
+  display: block;
+  font-size: 12px;
+  color: var(--color-error);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: var(--radio-pildora);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.etiqueta--activa {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.etiqueta--baja {
+  background: var(--color-surface-container);
+  color: var(--color-on-surface-variant);
+}
+
+.formulario-tienda {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 720px;
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radio-tarjeta);
+}
+
+.formulario-tienda h2,
+.formulario-tienda .error-general,
+.formulario-tienda__acciones {
+  grid-column: 1 / -1;
+}
+
+.formulario-tienda h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.formulario-tienda__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.formulario-tienda__acciones .boton-principal {
+  width: auto;
+}
