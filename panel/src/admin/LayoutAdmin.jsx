@@ -1,4 +1,3 @@
-````jsx
 import { NavLink, Outlet } from 'react-router-dom'
 import { useSesion } from '@shared/auth/SesionContext.jsx'
 import './LayoutAdmin.css'

@@ -1,4 +1,3 @@
-````jsx
 import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { peticion } from '../api/cliente.js'

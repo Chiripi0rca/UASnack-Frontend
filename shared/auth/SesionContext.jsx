@@ -1,4 +1,3 @@
-````jsx
 import { createContext, useContext, useEffect, useState } from 'react'
 import { peticion } from '../api/cliente.js'
 import { alExpirarSesion, borrarSesion, guardarSesion, leerSesion } from './almacenSesion.js'
