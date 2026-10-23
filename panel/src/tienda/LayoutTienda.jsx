@@ -10,7 +10,7 @@ const DESTINOS = [
   { texto: 'Cola de pedidos' },
   { texto: 'Producción' },
   { texto: 'Catálogo y stock', ruta: '/catalogo' },
-  { texto: 'Franjas y capacidad' },
+  { texto: 'Franjas y capacidad', ruta: '/capacidad' },
   { texto: 'Corte de caja' },
   { texto: 'Configura tus pagos' },
 ]

@@ -3,6 +3,7 @@ import RutaPorRol from '@shared/auth/RutaPorRol.jsx'
 import LayoutAdmin from './admin/LayoutAdmin.jsx'
 import Tiendas from './admin/Tiendas.jsx'
 import CatalogoStock from './tienda/CatalogoStock.jsx'
+import FranjasCapacidad from './tienda/FranjasCapacidad.jsx'
 import LayoutTienda from './tienda/LayoutTienda.jsx'
 
 // ESQUELETO (Sprint 02). Rutas del panel; el prefijo /panel lo pone el basename de main.jsx.
@@ -25,6 +26,8 @@ export default function App() {
         <Route element={<LayoutTienda />}>
           <Route index element={<Navigate to="catalogo" replace />} />
           <Route path="catalogo" element={<CatalogoStock />} />
+          {/* #107 (José Ángel) llena FranjasCapacidad.jsx */}
+          <Route path="capacidad" element={<FranjasCapacidad />} />
         </Route>
       </Route>
 

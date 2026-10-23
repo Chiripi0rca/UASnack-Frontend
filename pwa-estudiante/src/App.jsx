@@ -16,6 +16,8 @@ export default function App(){
       <Route path="/login" element={<Login/>} />
       <Route path="/registro" element={<Registro/>} />
       <Route path="/verificacion" element={<Verificacion/>}/>
+      {/* HU-33 (Ricardo), sin sesión: <Route path="/olvide-contrasena" element={<OlvideContrasena/>}/>
+          y <Route path="/nueva-contrasena" element={<NuevaContrasena/>}/> */}
       {/* Rutas que piden sesión: sin token, RutaProtegida manda al login */}
       <Route element={<RutaProtegida/>}>
         {/* Pantallas con barra de navegación inferior (#227). Cada pantalla nueva agrega UNA línea aquí. */}
@@ -24,11 +26,14 @@ export default function App(){
           <Route path="/tiendas/:idTienda" element={<Catalogo/>}/>
           <Route path="/productos/:idProducto" element={<DetalleProducto/>}/>
           <Route path="/carrito" element={<Carrito/>}/>
+          {/* #54 (José Ángel): <Route path="/retiro/:idTienda" element={<EleccionRetiro/>}/> */}
           {/* Destinos de la barra que aún no tienen pantalla, igual que en Android (#229).
               Cuando exista la pantalla real, se cambia PantallaPendiente por ella. */}
           <Route path="/pedidos" element={<PantallaPendiente titulo="Pedidos"/>}/>
           <Route path="/pagos" element={<PantallaPendiente titulo="Pagos"/>}/>
+          {/* #219 (Ricardo) cambia PantallaPendiente por la pantalla de Perfil */}
           <Route path="/perfil" element={<PantallaPendiente titulo="Perfil"/>}/>
+          {/* HU-33 (Ricardo): <Route path="/perfil/contrasena" element={<CambiarContrasena/>}/> */}
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace/>}/>
