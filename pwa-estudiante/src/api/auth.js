@@ -20,3 +20,7 @@ export const reenviarCodigo = (correo) =>
     method: 'POST',
     body: { correo_institucional: correo },
   })
+
+// #218 (Ricardo): el perfil con datos frescos del servidor, cada vez que se abre Perfil (#219).
+// { usuario: { id, nombre, apellido, correo_institucional, facultad: { id, nombre }, rol, reputacion, faltas } }
+export const obtenerPerfil = () => peticion('/auth/yo')
