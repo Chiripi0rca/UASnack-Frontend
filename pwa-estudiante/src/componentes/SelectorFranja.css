@@ -1,0 +1,65 @@
+/* Rejilla de franjas (#172).
+   Cada columna mide al menos 140 px: a 390 px de ancho caben 2, en pantallas anchas caben más. */
+.selector-franja {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+/* Cada franja es un botón: la hora arriba y, debajo, "Llena" o el descuento */
+.selector-franja__opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px; /* más que el área táctil mínima de 48 px (Anexo B) */
+  padding: 8px 12px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-chip);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: 600 14px var(--fuente-ui);
+  cursor: pointer;
+  transition: transform 80ms ease; /* index.css la apaga si el sistema pide menos animación */
+}
+
+/* Retroalimentación inmediata al tocar: el botón se encoge un poco mientras está presionado */
+.selector-franja__opcion:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Elegida: fondo primary container, no solo un borde (Anexo B) */
+.selector-franja__opcion.activa {
+  border-color: transparent;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+/* Llena: fondo surface container y texto gris, nunca solo opacidad (Anexo B.4) */
+.selector-franja__opcion:disabled {
+  border-color: transparent;
+  background: var(--color-surface-container);
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+/* Las horas van en IBM Plex Mono (Anexo B) */
+.selector-franja__hora {
+  font-family: var(--fuente-datos);
+  font-size: 15px;
+}
+
+/* Texto chico debajo de la hora */
+.selector-franja__nota,
+.selector-franja__descuento {
+  font-size: 12px;
+}
+
+/* El descuento va en una pastilla de color tertiary, el color de los avisos */
+.selector-franja__descuento {
+  padding: 0 8px;
+  border-radius: var(--radio-pildora);
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+}
