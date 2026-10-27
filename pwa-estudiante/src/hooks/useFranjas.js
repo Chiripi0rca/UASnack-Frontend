@@ -1,24 +1,41 @@
-// ESQUELETO (Sprint 03). Lo completa #172 (Alfredo).
-// GET /tiendas/{id}/franjas: las próximas franjas de la tienda para un carrito de "minutos" de cocina.
-// Debe volver a pedirlas cuando cambien los minutos (queryKey con idTienda y minutos).
-//
-// Por ahora regresa DATOS DE EJEMPLO para que la pantalla de Elección de retiro (#54) se pueda hacer
-// sin esperar al backend. #172 cambia SOLO el contenido: el nombre y lo que regresa se quedan igual.
-//   import { useQuery } from '@tanstack/react-query'
-//   import { obtenerFranjas } from '../api/pedidos.js'
-const FRANJAS_DE_EJEMPLO = [
-  { fecha: '2026-10-22', inicio: '11:00', fin: '11:10', minutos_restantes: 24, disponible: true, descuento: null },
-  { fecha: '2026-10-22', inicio: '11:10', fin: '11:20', minutos_restantes: 6, disponible: false, descuento: null },
-  { fecha: '2026-10-22', inicio: '11:20', fin: '11:30', minutos_restantes: 30, disponible: true, descuento: 10 },
-  { fecha: '2026-10-22', inicio: '11:30', fin: '11:40', minutos_restantes: 18, disponible: true, descuento: null },
-]
+// useQuery: pide los datos al servidor y los guarda en caché.
+// keepPreviousData: mientras llega una respuesta nueva, deja ver la anterior.
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+// La función que hace el GET /tiendas/{id}/franjas (ya existe en api/pedidos.js).
+import { obtenerFranjas } from '../api/pedidos.js'
 
-// eslint-disable-next-line no-unused-vars
+// GET /tiendas/{id}/franjas (#172). Trae las próximas franjas de una tienda (máximo 8).
+// Recibe:
+//   idTienda → la tienda donde el alumno está pidiendo
+//   minutos  → minutos de cocina del carrito (tiempo_prep_min × cantidad de cada producto)
+// Regresa { datos, cargando, error, reintentar }, igual que useCatalogo y useTiendas.
 export function useFranjas(idTienda, minutos) {
+  // Si todavía no llegan los minutos, se piden las franjas para un carrito de 0 min
+  // en vez de mandarle "minutos=undefined" al servidor.
+  const minutosCocina = minutos ?? 0
+
+  const consulta = useQuery({
+    // La "llave" de la caché. Lleva la tienda y los minutos: si cambia cualquiera de los dos,
+    // se vuelven a pedir las franjas, porque donde cabían 6 min puede no haber lugar para 18.
+    queryKey: ['tiendas', idTienda, 'franjas', minutosCocina],
+    // Cómo se traen los datos: llamando al endpoint.
+    queryFn: () => obtenerFranjas(idTienda, minutosCocina),
+    // Sin tienda no hay nada que pedir (por ejemplo, mientras se lee la URL).
+    enabled: Boolean(idTienda),
+    // Al cambiar los minutos se siguen viendo las franjas anteriores hasta que lleguen las nuevas:
+    // así la rejilla no parpadea a "cargando" cada vez que el alumno cambia el carrito.
+    placeholderData: keepPreviousData,
+  })
+
   return {
-    datos: FRANJAS_DE_EJEMPLO,
-    cargando: false,
-    error: null,
-    reintentar: () => {},
+    // El servidor responde { datos: [...], meta: { total } }: aquí solo se pasa la lista.
+    // Mientras carga la primera vez vale undefined.
+    datos: consulta.data?.datos,
+    // true solo la primera vez, cuando todavía no hay nada que mostrar.
+    cargando: consulta.isPending,
+    // El ErrorApi del cliente HTTP (trae el codigo y el mensaje del servidor), o null.
+    error: consulta.error,
+    // Vuelve a pedir las franjas: va directo al botón "Reintentar" de EstadoError.
+    reintentar: consulta.refetch,
   }
 }
