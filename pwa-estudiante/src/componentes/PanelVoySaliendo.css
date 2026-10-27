@@ -1,0 +1,68 @@
+/* Panel "voy saliendo" (#59): el botón para elegir el modo y, debajo, un aviso si hace falta */
+.panel-voy-saliendo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* El botón ocupa todo el ancho: el título arriba y el rango abajo, alineados a la izquierda */
+.panel-voy-saliendo__opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  min-height: var(--area-tactil-min); /* área táctil mínima de 48 px (Anexo B) */
+  padding: 12px 16px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: 400 14px var(--fuente-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 80ms ease; /* index.css la apaga si el sistema pide menos animación */
+}
+
+/* Retroalimentación inmediata al tocar: el botón se encoge un poco mientras está presionado */
+.panel-voy-saliendo__opcion:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Elegido: fondo primary container, igual que una franja elegida (Anexo B) */
+.panel-voy-saliendo__opcion.activo {
+  border-color: transparent;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+/* Sin cupo: fondo surface container y texto gris, nunca solo opacidad (Anexo B.4) */
+.panel-voy-saliendo__opcion:disabled {
+  border-color: transparent;
+  background: var(--color-surface-container);
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+/* "Voy saliendo", más grande que el rango */
+.panel-voy-saliendo__titulo {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Los minutos van en IBM Plex Mono, como todas las horas y tiempos (Anexo B) */
+.panel-voy-saliendo__minutos {
+  font-family: var(--fuente-datos);
+  font-weight: 600;
+}
+
+/* Aviso: fondo tertiary container, el color de los avisos y de "voy saliendo" (Anexo B.1) */
+.panel-voy-saliendo__aviso {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+  font-size: 14px;
+  line-height: 20px;
+}
