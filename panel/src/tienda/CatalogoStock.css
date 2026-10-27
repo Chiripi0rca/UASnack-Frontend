@@ -101,3 +101,13 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* #238: vista previa de la foto en el formulario del producto.
+   Cuadrada, recortada para llenar el cuadro (object-fit: cover) y con el mismo borde de las tarjetas. */
+.formulario-producto__foto {
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radio-chip);
+  object-fit: cover;
+}

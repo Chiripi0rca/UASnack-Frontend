@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { NOMBRES_CATEGORIA } from '@shared/catalogo/categorias.js'
 import BotonPrincipal from '@shared/componentes/BotonPrincipal.jsx'
 import Campo from '@shared/componentes/CampoTexto.jsx'
-import { actualizarProducto, crearProducto } from '../api/productos.js'
+import { actualizarProducto, crearProducto, subirFoto } from '../api/productos.js'
 
 // Alta y edición de un producto (POST / PATCH /tienda/productos), parte de "Catálogo y stock" (#100).
 // producto = null → nuevo (pide el stock inicial). Con producto → editar (el stock se cambia en la tabla).
 // Los errores por campo y sus textos vienen del servidor (422, campos).
+// #238: la foto se elige como archivo y se sube aparte (POST /tienda/productos/{id}/foto),
+// después de guardar los datos, porque para subirla hace falta el id del producto.
 export default function FormularioProducto({ producto, alCerrar }) {
   const clienteQuery = useQueryClient()
   const esNuevo = !producto
@@ -21,11 +23,28 @@ export default function FormularioProducto({ producto, alCerrar }) {
     stock_hoy: '0',
     tiempo_prep_min: producto ? String(producto.tiempo_prep_min) : '',
     tiempo_prep_max: producto ? String(producto.tiempo_prep_max) : '',
-    foto_url: producto?.foto_url ?? '',
   })
 
+  // #238: la foto que eligió el encargado (un File del navegador), o null si no ha elegido.
+  const [archivo, setArchivo] = useState(null)
+
+  // #238: id del producto ya guardado: el que se edita, o el que se acaba de crear.
+  // Si al crear se guardan los datos pero falla la foto, el siguiente "Guardar" edita ese
+  // producto en vez de crear otro igual.
+  const [idGuardado, setIdGuardado] = useState(producto?.id ?? null)
+
+  // #238: vista previa de la foto elegida. createObjectURL da una dirección temporal
+  // (blob:...) para mostrar el archivo en un <img> sin subirlo todavía.
+  const vistaPrevia = useMemo(() => (archivo ? URL.createObjectURL(archivo) : null), [archivo])
+  // Al cambiar de foto o cerrar el formulario se libera esa dirección temporal de la memoria.
+  useEffect(() => {
+    return () => {
+      if (vistaPrevia) URL.revokeObjectURL(vistaPrevia)
+    }
+  }, [vistaPrevia])
+
   const guardar = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       // Un campo vacío se manda como null para que el servidor responda con su propio mensaje
       const numero = (texto) => (texto === '' ? null : Number(texto))
       const datos = {
@@ -35,17 +54,26 @@ export default function FormularioProducto({ producto, alCerrar }) {
         precio: numero(valores.precio),
         tiempo_prep_min: numero(valores.tiempo_prep_min),
         tiempo_prep_max: numero(valores.tiempo_prep_max),
-        foto_url: valores.foto_url.trim() || null,
       }
-      // stock_hoy solo existe al crear (ActualizarProductoRequest no lo acepta)
-      return esNuevo
-        ? crearProducto({ ...datos, stock_hoy: numero(valores.stock_hoy) })
-        : actualizarProducto(producto.id, datos)
+
+      // 1. Los datos. stock_hoy solo existe al crear (ActualizarProductoRequest no lo acepta).
+      let id = idGuardado
+      if (id === null) {
+        const creado = await crearProducto({ ...datos, stock_hoy: numero(valores.stock_hoy) })
+        id = creado.datos.id
+        // Se recuerda en seguida, por si el paso 2 falla.
+        setIdGuardado(id)
+      } else {
+        await actualizarProducto(id, datos)
+      }
+
+      // 2. #238: la foto, solo si eligió una. Si el servidor la rechaza (422), el error
+      // llega en campos.foto y se muestra debajo del campo "Foto".
+      if (archivo) await subirFoto(id, archivo)
     },
-    onSuccess: () => {
-      clienteQuery.invalidateQueries({ queryKey: ['tienda', 'productos'] })
-      alCerrar()
-    },
+    // Pase lo que pase se refresca la tabla: aunque falle la foto, los datos ya se guardaron.
+    onSettled: () => clienteQuery.invalidateQueries({ queryKey: ['tienda', 'productos'] }),
+    onSuccess: () => alCerrar(),
   })
 
   // Primer mensaje del servidor para un campo, o undefined
@@ -89,7 +117,8 @@ export default function FormularioProducto({ producto, alCerrar }) {
           onChange={cambiar('precio')}
         />
       </Campo>
-      {esNuevo && (
+      {/* El stock inicial solo se pide mientras el producto no existe */}
+      {idGuardado === null && (
         <Campo etiqueta="Stock de hoy" error={errorDe('stock_hoy')}>
           <input
             type="number"
@@ -118,9 +147,24 @@ export default function FormularioProducto({ producto, alCerrar }) {
           onChange={cambiar('tiempo_prep_max')}
         />
       </Campo>
-      <Campo etiqueta="URL de la foto (opcional)" error={errorDe('foto_url')}>
-        <input type="url" value={valores.foto_url} onChange={cambiar('foto_url')} />
+
+      {/* #238: la foto se elige del equipo. accept solo filtra el explorador de archivos;
+          quien de verdad revisa tipo y peso (máximo 2 MB) es el servidor. */}
+      <Campo etiqueta="Foto (opcional) · JPG, PNG o WebP, máximo 2 MB" error={errorDe('foto')}>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={(e) => setArchivo(e.target.files?.[0] ?? null)}
+        />
       </Campo>
+      {/* La foto nueva si eligió una; si no, la que ya tiene el producto */}
+      {(vistaPrevia || producto?.foto_url) && (
+        <img
+          className="formulario-producto__foto"
+          src={vistaPrevia ?? producto.foto_url}
+          alt={`Foto de ${valores.nombre || 'el producto'}`}
+        />
+      )}
 
       {/* Error general (403, sin conexión…) cuando no viene por campo */}
       {guardar.isError && !hayErroresDeCampo && (
@@ -135,7 +179,8 @@ export default function FormularioProducto({ producto, alCerrar }) {
         </button>
         <BotonPrincipal
           type="submit"
-          texto={esNuevo ? 'Crear producto' : 'Guardar cambios'}
+          // Si el producto ya se creó (aunque la foto haya fallado), ahora se guardan cambios.
+          texto={idGuardado === null ? 'Crear producto' : 'Guardar cambios'}
           cargando={guardar.isPending}
         />
       </div>
