@@ -18,16 +18,20 @@ export class ErrorApi extends Error {
 export async function peticion(ruta, { method = 'GET', body } = {}) {
   // Si hay sesión guardada, cada petición lleva su token para que auth:sanctum sepa quién es.
   const token = leerToken()
+  // Un archivo (por ejemplo, la foto de un producto, #238) viaja como FormData (multipart):
+  // ese body se manda tal cual, sin convertirlo a JSON, y sin poner el Content-Type a mano,
+  // porque el navegador lo pone solo junto con el "boundary" que separa cada parte.
+  const esArchivo = body instanceof FormData
   let respuesta
   try {
     respuesta = await fetch(`${URL_API}${ruta}`, {
       method,
       headers: {
         Accept: 'application/json',
-        ...(body && { 'Content-Type': 'application/json; charset=UTF-8' }),
+        ...(body && !esArchivo && { 'Content-Type': 'application/json; charset=UTF-8' }),
         ...(token && { Authorization: `Bearer ${token}` }),
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: esArchivo ? body : body ? JSON.stringify(body) : undefined,
     })
   } catch {
     throw new ErrorApi({

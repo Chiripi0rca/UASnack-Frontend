@@ -13,3 +13,12 @@ export const actualizarProducto = (id, datos) =>
 // 0 = agotado. El servidor decide estado_producto según el stock.
 export const actualizarStock = (id, stockHoy) =>
   peticion(`/tienda/productos/${id}/stock`, { method: 'PATCH', body: { stock_hoy: stockHoy } })
+
+// #238: sube la foto de un producto. archivo = el File que eligió el encargado en el formulario.
+// Va dentro de un FormData en el campo "foto", que es el nombre que espera el backend.
+// Responde el producto con su foto_url nueva.
+export const subirFoto = (id, archivo) => {
+  const formulario = new FormData()
+  formulario.append('foto', archivo)
+  return peticion(`/tienda/productos/${id}/foto`, { method: 'POST', body: formulario })
+}
