@@ -82,6 +82,29 @@
   font-size: 20px;
 }
 
+/* #237: casilla "Se prepara al momento", a todo lo ancho */
+.formulario-producto__casilla {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: var(--area-tactil-min);
+  cursor: pointer;
+}
+
+.formulario-producto__casilla input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--color-primary);
+}
+
+.formulario-producto__ayuda {
+  display: block;
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+}
+
 .formulario-producto__acciones {
   display: flex;
   justify-content: flex-end;

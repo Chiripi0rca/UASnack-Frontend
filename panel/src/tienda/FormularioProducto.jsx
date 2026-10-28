@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { NOMBRES_CATEGORIA } from '@shared/catalogo/categorias.js'
+import { NOMBRES_CATEGORIA, sePreparaPorDefecto } from '@shared/catalogo/categorias.js'
 import BotonPrincipal from '@shared/componentes/BotonPrincipal.jsx'
 import Campo from '@shared/componentes/CampoTexto.jsx'
 import { actualizarProducto, crearProducto, subirFoto } from '../api/productos.js'
@@ -10,6 +10,8 @@ import { actualizarProducto, crearProducto, subirFoto } from '../api/productos.j
 // Los errores por campo y sus textos vienen del servidor (422, campos).
 // #238: la foto se elige como archivo y se sube aparte (POST /tienda/productos/{id}/foto),
 // después de guardar los datos, porque para subirla hace falta el id del producto.
+// #237: casilla "Se prepara al momento". Desmarcada (botanas, refrescos) oculta los tiempos y los
+// manda en 0: el producto no ocupa cupo de cocina y la app del alumno no le muestra tiempo.
 export default function FormularioProducto({ producto, alCerrar }) {
   const clienteQuery = useQueryClient()
   const esNuevo = !producto
@@ -24,6 +26,11 @@ export default function FormularioProducto({ producto, alCerrar }) {
     tiempo_prep_min: producto ? String(producto.tiempo_prep_min) : '',
     tiempo_prep_max: producto ? String(producto.tiempo_prep_max) : '',
   })
+
+  // #237: al editar, lo que ya tiene el producto. Al crear empieza desmarcada (todavía no hay
+  // categoría) y sigue a la categoría elegida hasta que el encargado toque la casilla.
+  const [sePrepara, setSePrepara] = useState(producto ? producto.tiempo_prep_min > 0 : false)
+  const [tocoCasilla, setTocoCasilla] = useState(!esNuevo)
 
   // #238: la foto que eligió el encargado (un File del navegador), o null si no ha elegido.
   const [archivo, setArchivo] = useState(null)
@@ -52,8 +59,9 @@ export default function FormularioProducto({ producto, alCerrar }) {
         descripcion: valores.descripcion.trim() || null,
         id_categoria: numero(valores.id_categoria),
         precio: numero(valores.precio),
-        tiempo_prep_min: numero(valores.tiempo_prep_min),
-        tiempo_prep_max: numero(valores.tiempo_prep_max),
+        // #237: lo que no se cocina va en 0 y 0, aunque haya quedado algo escrito en los campos
+        tiempo_prep_min: sePrepara ? numero(valores.tiempo_prep_min) : 0,
+        tiempo_prep_max: sePrepara ? numero(valores.tiempo_prep_max) : 0,
       }
 
       // 1. Los datos. stock_hoy solo existe al crear (ActualizarProductoRequest no lo acepta).
@@ -82,6 +90,17 @@ export default function FormularioProducto({ producto, alCerrar }) {
 
   const cambiar = (campo) => (e) => setValores((v) => ({ ...v, [campo]: e.target.value }))
 
+  // #237: mientras no toque la casilla, la categoría decide si se prepara
+  function cambiarCategoria(e) {
+    cambiar('id_categoria')(e)
+    if (!tocoCasilla) setSePrepara(sePreparaPorDefecto(e.target.value))
+  }
+
+  function cambiarSePrepara(e) {
+    setTocoCasilla(true)
+    setSePrepara(e.target.checked)
+  }
+
   function enviar(e) {
     e.preventDefault()
     if (!guardar.isPending) guardar.mutate()
@@ -98,7 +117,7 @@ export default function FormularioProducto({ producto, alCerrar }) {
         <input value={valores.descripcion} onChange={cambiar('descripcion')} />
       </Campo>
       <Campo etiqueta="Categoría" error={errorDe('id_categoria')}>
-        <select value={valores.id_categoria} onChange={cambiar('id_categoria')}>
+        <select value={valores.id_categoria} onChange={cambiarCategoria}>
           <option value="">Elige una</option>
           {Object.entries(NOMBRES_CATEGORIA).map(([id, nombre]) => (
             <option key={id} value={id}>
@@ -129,24 +148,38 @@ export default function FormularioProducto({ producto, alCerrar }) {
           />
         </Campo>
       )}
-      <Campo etiqueta="Preparación mínima (min)" error={errorDe('tiempo_prep_min')}>
-        <input
-          type="number"
-          min="1"
-          inputMode="numeric"
-          value={valores.tiempo_prep_min}
-          onChange={cambiar('tiempo_prep_min')}
-        />
-      </Campo>
-      <Campo etiqueta="Preparación máxima (min)" error={errorDe('tiempo_prep_max')}>
-        <input
-          type="number"
-          min="1"
-          inputMode="numeric"
-          value={valores.tiempo_prep_max}
-          onChange={cambiar('tiempo_prep_max')}
-        />
-      </Campo>
+      {/* #237 */}
+      <label className="formulario-producto__casilla">
+        <input type="checkbox" checked={sePrepara} onChange={cambiarSePrepara} />
+        <span>
+          Se prepara al momento
+          <span className="formulario-producto__ayuda">
+            Desmárcala para lo que ya está listo, como botanas o refrescos: no ocupa cupo de cocina.
+          </span>
+        </span>
+      </label>
+      {sePrepara && (
+        <>
+          <Campo etiqueta="Preparación mínima (min)" error={errorDe('tiempo_prep_min')}>
+            <input
+              type="number"
+              min="1"
+              inputMode="numeric"
+              value={valores.tiempo_prep_min}
+              onChange={cambiar('tiempo_prep_min')}
+            />
+          </Campo>
+          <Campo etiqueta="Preparación máxima (min)" error={errorDe('tiempo_prep_max')}>
+            <input
+              type="number"
+              min="1"
+              inputMode="numeric"
+              value={valores.tiempo_prep_max}
+              onChange={cambiar('tiempo_prep_max')}
+            />
+          </Campo>
+        </>
+      )}
 
       {/* #238: la foto se elige del equipo. accept solo filtra el explorador de archivos;
           quien de verdad revisa tipo y peso (máximo 2 MB) es el servidor. */}
