@@ -102,13 +102,16 @@ export default function DetalleProducto() {
       <h1>{producto.nombre}</h1>
       {producto.descripcion && <p className="detalle__descripcion">{producto.descripcion}</p>}
       <p className="detalle__precio mono">{formatearPrecio(producto.precio)}</p>
-      {/* Rango de preparación tal como lo manda el servidor: nunca un tiempo fijo */}
-      <p className="detalle__descripcion">
-        Preparación:{' '}
-        <span className="mono">
-          {producto.tiempo_prep_min}–{producto.tiempo_prep_max} min
-        </span>
-      </p>
+      {/* Rango de preparación tal como lo manda el servidor: nunca un tiempo fijo.
+          #237: lo que no se cocina (se_prepara = false) no muestra tiempo. */}
+      {producto.se_prepara !== false && producto.tiempo_prep_min > 0 && (
+        <p className="detalle__descripcion">
+          Preparación:{' '}
+          <span className="mono">
+            {producto.tiempo_prep_min}–{producto.tiempo_prep_max} min
+          </span>
+        </p>
+      )}
 
       {extras.length > 0 && (
         <section className="detalle__grupo">
