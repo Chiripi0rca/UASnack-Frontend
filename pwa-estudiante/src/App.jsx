@@ -6,6 +6,7 @@ import Catalogo from './pantallas/Catalogo.jsx'
 import DetalleProducto from './pantallas/DetalleProducto.jsx'
 import Login from './pantallas/Login.jsx'
 import PantallaPendiente from './pantallas/PantallaPendiente.jsx'
+import Perfil from './pantallas/Perfil.jsx'
 import Registro from './pantallas/Registro.jsx'
 import Tiendas from './pantallas/Tiendas.jsx'
 import Verificacion from './pantallas/Verificacion.jsx'
@@ -31,8 +32,7 @@ export default function App(){
               Cuando exista la pantalla real, se cambia PantallaPendiente por ella. */}
           <Route path="/pedidos" element={<PantallaPendiente titulo="Pedidos"/>}/>
           <Route path="/pagos" element={<PantallaPendiente titulo="Pagos"/>}/>
-          {/* #219 (Ricardo) cambia PantallaPendiente por la pantalla de Perfil */}
-          <Route path="/perfil" element={<PantallaPendiente titulo="Perfil"/>}/>
+          <Route path="/perfil" element={<Perfil/>}/>
           {/* HU-33 (Ricardo): <Route path="/perfil/contrasena" element={<CambiarContrasena/>}/> */}
         </Route>
       </Route>

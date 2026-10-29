@@ -1,0 +1,86 @@
+.perfil__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 16px;
+}
+
+.perfil__nombre {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.perfil__dato {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-on-surface-variant);
+}
+
+/* Tarjeta de faltas (HU-34, CA-02). El color no es lo único que cambia: el texto dice cuántas son. */
+.tarjeta-faltas {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: var(--radio-tarjeta);
+}
+
+.tarjeta-faltas--sin-faltas {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.tarjeta-faltas--pocas {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+}
+
+.tarjeta-faltas--muchas {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.tarjeta-faltas__numero {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.tarjeta-faltas__mensaje {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.perfil__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.perfil__accion {
+  display: flex;
+  align-items: center;
+  min-height: var(--area-tactil-min);
+  padding: 0 16px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.perfil__salir {
+  color: var(--color-error);
+}
+
+.perfil__salir:disabled {
+  color: var(--color-on-texto-deshabilitado);
+  cursor: default;
+}
