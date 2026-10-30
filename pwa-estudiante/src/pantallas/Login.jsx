@@ -141,6 +141,10 @@ export default function Login() {
             </form>
 
             <p className="acceso__alterno">
+                <Link to="/olvide-contrasena">¿Olvidaste tu contraseña?</Link>
+            </p>
+
+            <p className="acceso__alterno">
                 No tienes cuenta? <Link to="/registro">Crea una</Link>
             </p>
         </main>
