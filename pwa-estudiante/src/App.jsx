@@ -1,10 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import RutaProtegida from '@shared/auth/RutaProtegida.jsx'
 import LayoutConBarra from './componentes/LayoutConBarra.jsx'
+import CambiarContrasena from './pantallas/CambiarContrasena.jsx'
 import Carrito from './pantallas/Carrito.jsx'
 import Catalogo from './pantallas/Catalogo.jsx'
 import DetalleProducto from './pantallas/DetalleProducto.jsx'
 import Login from './pantallas/Login.jsx'
+import NuevaContrasena from './pantallas/NuevaContrasena.jsx'
+import OlvideContrasena from './pantallas/OlvideContrasena.jsx'
 import PantallaPendiente from './pantallas/PantallaPendiente.jsx'
 import Registro from './pantallas/Registro.jsx'
 import Tiendas from './pantallas/Tiendas.jsx'
@@ -16,8 +19,9 @@ export default function App(){
       <Route path="/login" element={<Login/>} />
       <Route path="/registro" element={<Registro/>} />
       <Route path="/verificacion" element={<Verificacion/>}/>
-      {/* HU-33 (Ricardo), sin sesión: <Route path="/olvide-contrasena" element={<OlvideContrasena/>}/>
-          y <Route path="/nueva-contrasena" element={<NuevaContrasena/>}/> */}
+      {/* HU-33: recuperar la contraseña, sin sesión */}
+      <Route path="/olvide-contrasena" element={<OlvideContrasena/>}/>
+      <Route path="/nueva-contrasena" element={<NuevaContrasena/>}/>
       {/* Rutas que piden sesión: sin token, RutaProtegida manda al login */}
       <Route element={<RutaProtegida/>}>
         {/* Pantallas con barra de navegación inferior (#227). Cada pantalla nueva agrega UNA línea aquí. */}
@@ -33,7 +37,8 @@ export default function App(){
           <Route path="/pagos" element={<PantallaPendiente titulo="Pagos"/>}/>
           {/* #219 (Ricardo) cambia PantallaPendiente por la pantalla de Perfil */}
           <Route path="/perfil" element={<PantallaPendiente titulo="Perfil"/>}/>
-          {/* HU-33 (Ricardo): <Route path="/perfil/contrasena" element={<CambiarContrasena/>}/> */}
+          {/* HU-33: cambiar la contraseña desde el Perfil */}
+          <Route path="/perfil/contrasena" element={<CambiarContrasena/>}/>
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace/>}/>

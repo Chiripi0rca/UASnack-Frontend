@@ -1,0 +1,35 @@
+/* Pantallas de contraseña (HU-33): Olvidé, Nueva contraseña y Cambiar contraseña */
+
+.contrasena__texto {
+  margin: 4px 0 24px;
+  color: var(--color-on-surface-variant);
+}
+
+.contrasena__texto strong {
+  color: var(--color-on-surface);
+  overflow-wrap: anywhere;
+}
+
+.contrasena__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contrasena__reenviar {
+  display: block;
+  margin: 16px auto 0;
+}
+
+/* El enlace de "Listo" se ve como el botón principal */
+.contrasena__enlace-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--area-tactil-min);
+  border-radius: var(--radio-pildora);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
