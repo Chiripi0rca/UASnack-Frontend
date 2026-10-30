@@ -9,8 +9,9 @@ import { actualizarCapacidad, obtenerCapacidad } from '../api/capacidad.js'
 import './FranjasCapacidad.css'
 
 // Vista "Franjas y capacidad" (#107). GET y PUT /tienda/capacidad (#106).
-// Al dueño no se le piden minutos: se le pregunta cuántas piezas alcanza a preparar en cada franja,
-// y el servidor las convierte a minutos de cocina. Aquí solo se muestra lo que él confirma:
+// Al dueño no se le piden minutos: se le pregunta cuántas personas cocinan en cada franja,
+// y el servidor las convierte a minutos de cocina (personas × duración de la franja).
+// Aquí solo se muestra lo que él confirma:
 // los minutos de cada franja son los GUARDADOS, el cliente no hace la conversión (README: el cliente no calcula).
 // Clave de caché: ['tienda', 'capacidad'] (general → particular).
 const CLAVE = ['tienda', 'capacidad']
@@ -20,16 +21,16 @@ const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', '
 
 // Mismo tope que el servidor (ActualizarCapacidadRequest). Solo para avisar antes de enviar:
 // el mensaje de error de verdad lo da el servidor.
-const MAXIMO_PIEZAS = 500
+const MAXIMO_PERSONAS = 20
 
 const llave = (franja) => `${franja.dia_semana}|${franja.hora_inicio}`
-const esPiezas = (texto) => /^\d+$/.test(texto) && Number(texto) <= MAXIMO_PIEZAS
+const esPersonas = (texto) => /^\d+$/.test(texto) && Number(texto) <= MAXIMO_PERSONAS
 
 // Regresa una copia de "cambios" con la franja puesta en "texto".
 // Si el texto es igual a lo guardado, deja de contar como cambio.
 function ponerCambio(cambios, franja, texto) {
   const nuevo = { ...cambios }
-  if (texto === String(franja.piezas)) delete nuevo[llave(franja)]
+  if (texto === String(franja.personas)) delete nuevo[llave(franja)]
   else nuevo[llave(franja)] = texto
   return nuevo
 }
@@ -38,7 +39,7 @@ export default function FranjasCapacidad() {
   const clienteQuery = useQueryClient()
   const consulta = useQuery({ queryKey: CLAVE, queryFn: obtenerCapacidad })
   const franjas = consulta.data?.datos ?? []
-  const minutosPorPieza = consulta.data?.meta?.minutos_por_pieza ?? null
+  const duracion = consulta.data?.meta?.duracion_franja_min ?? 10
 
   // Lo que el dueño ha escrito y todavía no guarda: { '1|11:00': '5' }. Los inputs manejan texto.
   const [cambios, setCambios] = useState({})
@@ -50,18 +51,20 @@ export default function FranjasCapacidad() {
   const dia = dias.includes(diaElegido) ? diaElegido : dias[0]
   const delDia = franjas.filter((f) => f.dia_semana === dia)
 
-  // Sin productos que se cocinen no hay con qué medir una pieza: se muestra pero no se edita
-  const puedeEditar = minutosPorPieza !== null
   const totalCambios = Object.keys(cambios).length
-  const hayInvalidos = Object.values(cambios).some((texto) => !esPiezas(texto))
+  const hayInvalidos = Object.values(cambios).some((texto) => !esPersonas(texto))
 
   const guardar = useMutation({
     // Solo se mandan las franjas que cambiaron
     mutationFn: () =>
       actualizarCapacidad(
-        Object.entries(cambios).map(([clave, piezas]) => {
+        Object.entries(cambios).map(([clave, personas]) => {
           const [diaSemana, horaInicio] = clave.split('|')
-          return { dia_semana: Number(diaSemana), hora_inicio: horaInicio, piezas: Number(piezas) }
+          return {
+            dia_semana: Number(diaSemana),
+            hora_inicio: horaInicio,
+            personas: Number(personas),
+          }
         })
       ),
     // El PUT responde con lo guardado, en la misma forma que el GET: la pantalla muestra
@@ -73,7 +76,7 @@ export default function FranjasCapacidad() {
   })
 
   function aplicarATodoElDia() {
-    if (!esPiezas(paraTodas)) return
+    if (!esPersonas(paraTodas)) return
     setCambios((actual) =>
       delDia.reduce((acumulado, f) => ponerCambio(acumulado, f, paraTodas), actual)
     )
@@ -87,8 +90,8 @@ export default function FranjasCapacidad() {
     <section>
       <h1>Franjas y capacidad</h1>
       <p className="franjas-capacidad__ayuda">
-        ¿Cuántas piezas alcanzas a preparar en cada franja? Es lo que cabe en tu cocina mientras
-        atiendes también a quien llega al mostrador.
+        ¿Cuántas personas cocinan los pedidos de la app en cada franja? Si en la hora de la comida
+        alguien se pasa a atender el mostrador, cuéntalo aquí.
       </p>
 
       {consulta.isPending && <EstadoCarga mensaje="Cargando capacidad…" />}
@@ -108,17 +111,10 @@ export default function FranjasCapacidad() {
 
       {consulta.isSuccess && !!franjas.length && (
         <>
-          {puedeEditar ? (
-            <p className="franjas-capacidad__equivalencia">
-              1 pieza equivale a <span className="mono">{minutosPorPieza}</span> min de cocina, el
-              promedio de tus productos que se preparan.
-            </p>
-          ) : (
-            <p className="error-general">
-              Aún no tienes productos que se preparen. Agrégalos en “Catálogo y stock” para poder
-              medir tu capacidad en piezas.
-            </p>
-          )}
+          <p className="franjas-capacidad__equivalencia">
+            Tus franjas duran <span className="mono">{duracion}</span> min: cada persona aporta{' '}
+            <span className="mono">{duracion}</span> min de cocina en cada una.
+          </p>
 
           <div className="franjas-capacidad__dias" role="group" aria-label="Día de la semana">
             {dias.map((numero) => {
@@ -137,38 +133,36 @@ export default function FranjasCapacidad() {
             })}
           </div>
 
-          {puedeEditar && (
-            <form
-              className="franjas-capacidad__todas"
-              noValidate
-              onSubmit={(e) => {
-                e.preventDefault()
-                aplicarATodoElDia()
-              }}
-            >
-              <label htmlFor="piezas-todas">
-                Mismas piezas en todo el {DIAS[dia].toLowerCase()}
-              </label>
-              <input
-                id="piezas-todas"
-                type="number"
-                min="0"
-                max={MAXIMO_PIEZAS}
-                inputMode="numeric"
-                value={paraTodas}
-                onChange={(e) => setParaTodas(e.target.value)}
-              />
-              <button type="submit" className="boton-texto" disabled={!esPiezas(paraTodas)}>
-                Aplicar
-              </button>
-            </form>
-          )}
+          <form
+            className="franjas-capacidad__todas"
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault()
+              aplicarATodoElDia()
+            }}
+          >
+            <label htmlFor="personas-todas">
+              Mismas personas en todo el {DIAS[dia].toLowerCase()}
+            </label>
+            <input
+              id="personas-todas"
+              type="number"
+              min="0"
+              max={MAXIMO_PERSONAS}
+              inputMode="numeric"
+              value={paraTodas}
+              onChange={(e) => setParaTodas(e.target.value)}
+            />
+            <button type="submit" className="boton-texto" disabled={!esPersonas(paraTodas)}>
+              Aplicar
+            </button>
+          </form>
 
           <table className="franjas-capacidad__tabla">
             <thead>
               <tr>
                 <th>Franja</th>
-                <th>Piezas</th>
+                <th>Personas</th>
                 <th>Minutos de cocina guardados</th>
               </tr>
             </thead>
@@ -176,7 +170,7 @@ export default function FranjasCapacidad() {
               {delDia.map((franja) => {
                 const clave = llave(franja)
                 const cambiada = clave in cambios
-                const texto = cambios[clave] ?? String(franja.piezas ?? '')
+                const texto = cambios[clave] ?? String(franja.personas ?? '')
                 return (
                   <tr
                     key={clave}
@@ -189,11 +183,10 @@ export default function FranjasCapacidad() {
                       <input
                         type="number"
                         min="0"
-                        max={MAXIMO_PIEZAS}
+                        max={MAXIMO_PERSONAS}
                         inputMode="numeric"
-                        disabled={!puedeEditar}
-                        aria-label={`Piezas de la franja ${franja.hora_inicio} a ${franja.hora_fin}`}
-                        aria-invalid={cambiada && !esPiezas(texto)}
+                        aria-label={`Personas de la franja ${franja.hora_inicio} a ${franja.hora_fin}`}
+                        aria-invalid={cambiada && !esPersonas(texto)}
                         value={texto}
                         onChange={(e) =>
                           setCambios((actual) => ponerCambio(actual, franja, e.target.value))
@@ -209,7 +202,7 @@ export default function FranjasCapacidad() {
 
           {hayInvalidos && (
             <p className="error-general">
-              Escribe las piezas como número entero, de 0 a {MAXIMO_PIEZAS}.
+              Escribe las personas como número entero, de 0 a {MAXIMO_PERSONAS}.
             </p>
           )}
           {guardar.isError && (
