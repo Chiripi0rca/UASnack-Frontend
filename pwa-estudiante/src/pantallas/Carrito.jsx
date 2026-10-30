@@ -1,11 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom'
 import BotonPrincipal from '@shared/componentes/BotonPrincipal.jsx'
 import EstadoVacio from '@shared/componentes/EstadoVacio.jsx'
 import { formatearPrecio } from '@shared/utilidades/formatearPrecio.js'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCarrito } from '../hooks/useCarrito.js'
 import './Carrito.css'
 
-// Pantalla 7 · Carrito (#168). Solo local (localStorage), sin llamadas a la API.
+// Pantalla 7 · Carrito . Solo local (localStorage), sin llamadas a la API.
 // Al quitar la ÚLTIMA línea regresa al catálogo de esa tienda.
 // totalLocal es solo para mostrar; el cobro real lo calcula el servidor (#49).
 export default function Carrito() {
@@ -94,9 +94,12 @@ export default function Carrito() {
         Agregar más productos
       </Link>
 
-      {/* "Continuar" lleva a Elección de retiro (pantalla 8), que aún no existe:
-          queda deshabilitado hasta esa tarea. */}
-      <BotonPrincipal texto="Continuar" importe={formatearPrecio(totalLocal)} disabled />
+      {/* "Continuar" lleva a Elección de retiro (pantalla 8, #54) */}
+      <BotonPrincipal
+        texto="Continuar"
+        importe={formatearPrecio(totalLocal)}
+        onClick={() => navegar(`/retiro/${idTienda}`)}
+      />
     </main>
   )
 }

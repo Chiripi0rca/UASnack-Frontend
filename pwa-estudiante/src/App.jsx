@@ -1,10 +1,11 @@
-import { Navigate, Route, Routes } from "react-router-dom"
 import RutaProtegida from '@shared/auth/RutaProtegida.jsx'
+import { Navigate, Route, Routes } from "react-router-dom"
 import LayoutConBarra from './componentes/LayoutConBarra.jsx'
 import CambiarContrasena from './pantallas/CambiarContrasena.jsx'
 import Carrito from './pantallas/Carrito.jsx'
 import Catalogo from './pantallas/Catalogo.jsx'
 import DetalleProducto from './pantallas/DetalleProducto.jsx'
+import EleccionRetiro from './pantallas/EleccionRetiro.jsx'
 import Login from './pantallas/Login.jsx'
 import NuevaContrasena from './pantallas/NuevaContrasena.jsx'
 import OlvideContrasena from './pantallas/OlvideContrasena.jsx'
@@ -25,14 +26,16 @@ export default function App(){
       <Route path="/nueva-contrasena" element={<NuevaContrasena/>}/>
       {/* Rutas que piden sesión: sin token, RutaProtegida manda al login */}
       <Route element={<RutaProtegida/>}>
-        {/* Pantallas con barra de navegación inferior (#227). Cada pantalla nueva agrega UNA línea aquí. */}
+        {/* Pantallas con barra de navegación inferior Cada pantalla nueva agregadr una linea*/}
         <Route element={<LayoutConBarra/>}>
           <Route path="/tiendas" element={<Tiendas/>}/>
           <Route path="/tiendas/:idTienda" element={<Catalogo/>}/>
           <Route path="/productos/:idProducto" element={<DetalleProducto/>}/>
           <Route path="/carrito" element={<Carrito/>}/>
-          {/* #54 (José Ángel): <Route path="/retiro/:idTienda" element={<EleccionRetiro/>}/> */}
-          {/* Destinos de la barra que aún no tienen pantalla, igual que en Android (#229).
+          <Route path="/retiro/:idTienda" element={<EleccionRetiro/>}/>
+          {/* Pantalla 9 (Confirmación y pago): EleccionRetiro ya manda aquí con { idTienda, modo, franja } */}
+          <Route path="/pago" element={<PantallaPendiente titulo="Confirmación y pago"/>}/>
+          {/* Destinos de la barra que aún no tienen pantalla, igual que en Android .
               Cuando exista la pantalla real, se cambia PantallaPendiente por ella. */}
           <Route path="/pedidos" element={<PantallaPendiente titulo="Pedidos"/>}/>
           <Route path="/pagos" element={<PantallaPendiente titulo="Pagos"/>}/>
