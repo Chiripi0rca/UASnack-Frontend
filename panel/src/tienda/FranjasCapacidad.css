@@ -1,0 +1,87 @@
+.franjas-capacidad__ayuda {
+  max-width: 640px;
+  margin: 0 0 16px;
+  color: var(--color-on-surface-variant);
+}
+
+.franjas-capacidad__equivalencia {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+}
+
+/* Chips de los días de la semana */
+.franjas-capacidad__dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* "Mismas piezas en todo el día" */
+.franjas-capacidad__todas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.franjas-capacidad__tabla {
+  width: 100%;
+  max-width: 720px;
+  margin-top: 8px;
+  border-collapse: collapse;
+}
+
+.franjas-capacidad__tabla th,
+.franjas-capacidad__tabla td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.franjas-capacidad__tabla th {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+/* Franja con un cambio que todavía no se guarda */
+.fila-franja--cambiada {
+  background: var(--color-primary-container);
+}
+
+.franjas-capacidad__tabla input,
+.franjas-capacidad__todas input {
+  width: 96px;
+  height: var(--area-tactil-min);
+  padding: 0 8px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radio-chip);
+  background: var(--color-surface);
+  font: 400 16px var(--fuente-datos);
+}
+
+.franjas-capacidad__tabla input:disabled {
+  color: var(--color-on-texto-deshabilitado);
+  cursor: not-allowed;
+}
+
+.franjas-capacidad__tabla input[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.franjas-capacidad__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 720px;
+  margin-top: 16px;
+}
+
+.franjas-capacidad__acciones .boton-principal {
+  width: auto;
+}
