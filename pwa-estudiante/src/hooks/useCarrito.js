@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
 
-// Carrito del alumno (#166). Vive solo en el cliente hasta que se confirma el pedido y se guarda
+// Carrito del alumno Vive solo en el cliente hasta que se confirma el pedido y se guarda
 // en localStorage para que no se pierda al cerrar la pestaña.
 // totalLocal es solo para mostrar: el total real lo calcula el servidor (calcularTotal, #49).
 
@@ -71,6 +71,8 @@ export function useCarrito() {
         id_tienda: producto.id_tienda,
         nombre: producto.nombre,
         precio: Number(producto.precio),
+        // Minutos de cocina de una unidad (#54): con ellos se piden las franjas y la espera
+        tiempo_prep_min: Number(producto.tiempo_prep_min ?? 0),
         cantidad,
         extras,
         quitables,
@@ -86,7 +88,7 @@ export function useCarrito() {
     guardarLineas([])
   }
 
-  // Cambia la cantidad de una línea (pantalla de Carrito, #168). 0 o menos la quita, igual que
+  // Cambia la cantidad de una línea (pantalla de Carrito #168). 0 o menos la quita, igual que
   // cambiarCantidad en Android. No revisa existencias: pueden haber cambiado desde el catálogo,
   // y el servidor las revisa al crear el pedido.
   function cambiarCantidad(clave, cantidad) {

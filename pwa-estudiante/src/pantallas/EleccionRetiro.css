@@ -1,0 +1,19 @@
+.eleccion-retiro__volver {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--area-tactil-min);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Control de los dos modos */
+.eleccion-retiro__modos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.eleccion-retiro__continuar {
+  margin-top: 24px;
+}
