@@ -33,12 +33,17 @@ export default function App(){
           <Route path="/productos/:idProducto" element={<DetalleProducto/>}/>
           <Route path="/carrito" element={<Carrito/>}/>
           <Route path="/retiro/:idTienda" element={<EleccionRetiro/>}/>
-          {/* Pantalla 9 (Confirmación y pago): EleccionRetiro ya manda aquí con { idTienda, modo, franja } */}
+          {/* #63 (Alfredo) · Pantalla 9 (Confirmación y pago): EleccionRetiro ya manda aquí con { idTienda, modo, franja } */}
           <Route path="/pago" element={<PantallaPendiente titulo="Confirmación y pago"/>}/>
+          {/* #194 (Ricardo) · Pantalla 10: recibe el pedido que regresó useCrearPedido */}
+          <Route path="/pedido-confirmado" element={<PantallaPendiente titulo="Pedido confirmado"/>}/>
           {/* Destinos de la barra que aún no tienen pantalla, igual que en Android .
               Cuando exista la pantalla real, se cambia PantallaPendiente por ella. */}
           <Route path="/pedidos" element={<PantallaPendiente titulo="Pedidos"/>}/>
+          {/* #71 (Ricardo) cambia PantallaPendiente por Historial de pagos */}
           <Route path="/pagos" element={<PantallaPendiente titulo="Pagos"/>}/>
+          {/* #67 (José Ángel) cambia PantallaPendiente por Métodos de pago */}
+          <Route path="/pagos/metodos" element={<PantallaPendiente titulo="Métodos de pago"/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
           {/* HU-33: cambiar la contraseña desde el Perfil (#215) */}
           <Route path="/perfil/contrasena" element={<CambiarContrasena/>}/>

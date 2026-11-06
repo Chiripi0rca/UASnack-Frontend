@@ -3,6 +3,7 @@ import RutaPorRol from '@shared/auth/RutaPorRol.jsx'
 import LayoutAdmin from './admin/LayoutAdmin.jsx'
 import Tiendas from './admin/Tiendas.jsx'
 import CatalogoStock from './tienda/CatalogoStock.jsx'
+import ConfiguraPagos from './tienda/ConfiguraPagos.jsx'
 import FranjasCapacidad from './tienda/FranjasCapacidad.jsx'
 import LayoutTienda from './tienda/LayoutTienda.jsx'
 
@@ -28,6 +29,8 @@ export default function App() {
           <Route path="catalogo" element={<CatalogoStock />} />
           {/* #107 (José Ángel) llena FranjasCapacidad.jsx */}
           <Route path="capacidad" element={<FranjasCapacidad />} />
+          {/* #147 (Ricardo) llena ConfiguraPagos.jsx */}
+          <Route path="pagos" element={<ConfiguraPagos />} />
         </Route>
       </Route>
 

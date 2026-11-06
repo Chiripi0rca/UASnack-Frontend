@@ -15,7 +15,8 @@ export class ErrorApi extends Error {
   }
 }
 
-export async function peticion(ruta, { method = 'GET', body } = {}) {
+// headers: encabezados extra de una llamada, por ejemplo Idempotency-Key en POST /pedidos.
+export async function peticion(ruta, { method = 'GET', body, headers = {} } = {}) {
   // Si hay sesión guardada, cada petición lleva su token para que auth:sanctum sepa quién es.
   const token = leerToken()
   // Un archivo (por ejemplo, la foto de un producto, #238) viaja como FormData (multipart):
@@ -30,6 +31,7 @@ export async function peticion(ruta, { method = 'GET', body } = {}) {
         Accept: 'application/json',
         ...(body && !esArchivo && { 'Content-Type': 'application/json; charset=UTF-8' }),
         ...(token && { Authorization: `Bearer ${token}` }),
+        ...headers,
       },
       body: esArchivo ? body : body ? JSON.stringify(body) : undefined,
     })
