@@ -12,7 +12,7 @@ const DESTINOS = [
   { texto: 'Catálogo y stock', ruta: '/catalogo' },
   { texto: 'Franjas y capacidad', ruta: '/capacidad' },
   { texto: 'Corte de caja' },
-  { texto: 'Configura tus pagos' },
+  { texto: 'Configura tus pagos', ruta: '/pagos' },
 ]
 
 export default function LayoutTienda() {

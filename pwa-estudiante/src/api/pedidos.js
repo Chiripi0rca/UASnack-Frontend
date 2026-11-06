@@ -11,3 +11,13 @@ export const obtenerFranjas = (idTienda, minutos, limite = 8) =>
 // #57 (José Ángel): { datos: { min, max, saturada, pedidos_en_cocina, voy_saliendo_disponible } }
 export const obtenerEspera = (idTienda, minutos) =>
   peticion(`/tiendas/${idTienda}/espera?minutos=${minutos}`)
+
+// ESQUELETO (Sprint 04). #148 (José Ángel): 201, o 200 si la clave se repite.
+// datos = { id_tienda, modo_retiro, franja, lineas: [{ id_producto, cantidad, extras, quitables }] }
+// → { datos: { codigo_pedido, estado, total, franja_inicio, franja_fin, pago: { client_secret, stripe_account } } }
+export const crearPedido = (datos, claveIdempotencia) =>
+  peticion('/pedidos', {
+    method: 'POST',
+    body: datos,
+    headers: { 'Idempotency-Key': claveIdempotencia },
+  })
