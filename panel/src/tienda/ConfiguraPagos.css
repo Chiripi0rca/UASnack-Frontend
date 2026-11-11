@@ -1,0 +1,46 @@
+.configura-pagos__ayuda {
+  max-width: 640px;
+  margin: 0 0 16px;
+  color: var(--color-on-surface-variant);
+}
+
+/* Tarjeta del estado de la cuenta (HU-24, CA-03). El color no es lo único que cambia: el título lo dice. */
+.estado-cuenta {
+  max-width: 640px;
+  padding: 16px;
+  border-radius: var(--radio-tarjeta);
+}
+
+.estado-cuenta--verificado {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.estado-cuenta--pendiente {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+}
+
+.estado-cuenta--rechazado {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.estado-cuenta__titulo {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.estado-cuenta__mensaje {
+  margin: 0;
+}
+
+.configura-pagos__acciones {
+  max-width: 360px;
+  margin-top: 24px;
+}
+
+.configura-pagos__error {
+  margin: 8px 0 0;
+  color: var(--color-error);
+}

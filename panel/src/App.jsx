@@ -29,7 +29,6 @@ export default function App() {
           <Route path="catalogo" element={<CatalogoStock />} />
           {/* #107 (José Ángel) llena FranjasCapacidad.jsx */}
           <Route path="capacidad" element={<FranjasCapacidad />} />
-          {/* #147 (Ricardo) llena ConfiguraPagos.jsx */}
           <Route path="pagos" element={<ConfiguraPagos />} />
         </Route>
       </Route>
