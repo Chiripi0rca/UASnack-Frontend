@@ -46,7 +46,7 @@ export async function peticion(ruta, { method = 'GET', body, headers = {} } = {}
 
   const datos = await respuesta.json().catch(() => null)
 
-  // 401 con token = la sesión venció o se revocó: se borra y RutaProtegida manda al login.
+  // 401 con token = la sesión venció o se revocó: se borra y RutaPorRol manda al login.
   // Sin token no se toca nada: es el 401 del login (CREDENCIALES_INVALIDAS) y la pantalla lo muestra.
   if (respuesta.status === 401 && token) expirarSesion()
 

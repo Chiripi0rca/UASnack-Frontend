@@ -1,5 +1,5 @@
 /* Base del panel (#201). Colores, fuentes, radios y área táctil salen de shared/diseno/tokens.css,
-   que importa main.jsx: así el panel y la PWA se ven igual. */
+   que importa main.jsx. */
 *,
 *::before,
 *::after {
