@@ -1,5 +1,4 @@
-/* Estilos de EstadoCarga, EstadoError y EstadoVacio. Viven en shared/ para que la PWA y el panel
-   se vean igual. */
+/* Estilos de EstadoCarga, EstadoError y EstadoVacio, compartidos por todas las vistas del panel. */
 
 .estado {
   display: flex;

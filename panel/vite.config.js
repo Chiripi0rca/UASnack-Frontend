@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: '/panel/',
   plugins: [react()],
-  // #223: puerto fijo para que la PWA sepa a dónde reenviar /panel
+  // Puerto fijo: el backend arma con él los enlaces de regreso al panel (PANEL_URL, por ejemplo al volver de Stripe)
   server: { port: 5174, strictPort: true },
   resolve: {
     // shared/ no tiene node_modules propio: así sus imports usan la misma copia que la app.

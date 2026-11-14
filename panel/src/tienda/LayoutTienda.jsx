@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useSesion } from '@shared/auth/SesionContext.jsx'
 import './LayoutTienda.css'
 
@@ -17,12 +17,12 @@ const DESTINOS = [
 
 export default function LayoutTienda() {
   const { usuario, cerrarSesion } = useSesion()
+  const navegar = useNavigate()
 
-  // Cerrar sesión: revoca el token y vuelve al login ÚNICO, que vive en la PWA (otra app):
-  // por eso se recarga la página con location en vez de navegar con React Router.
+  // Cerrar sesión: revoca el token y vuelve al login del panel (/panel/login).
   async function salir() {
     await cerrarSesion()
-    window.location.assign('/login')
+    navegar('/login', { replace: true })
   }
 
   return (

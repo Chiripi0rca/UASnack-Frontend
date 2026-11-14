@@ -12,7 +12,7 @@ const clienteQuery = new QueryClient()
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={clienteQuery}>
-      {/* La misma sesión que la PWA: mismo origen, mismo localStorage (ver #223) */}
+      {/* Sesión del panel: token y usuario guardados en localStorage (shared/auth/almacenSesion.js) */}
       <SesionProvider>
         {/* El panel se sirve bajo /panel/ (base en vite.config.js): las rutas de App.jsx no lo repiten */}
         <BrowserRouter basename="/panel">

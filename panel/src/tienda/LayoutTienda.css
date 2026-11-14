@@ -44,7 +44,7 @@
   background: var(--color-outline-variant);
 }
 
-/* Activo: pastilla primary container, igual que la barra de la PWA */
+/* Activo: pastilla primary container */
 .destino.activo {
   background: var(--color-primary-container);
   color: var(--color-on-primary-container);

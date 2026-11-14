@@ -6,6 +6,7 @@ import CatalogoStock from './tienda/CatalogoStock.jsx'
 import ConfiguraPagos from './tienda/ConfiguraPagos.jsx'
 import FranjasCapacidad from './tienda/FranjasCapacidad.jsx'
 import LayoutTienda from './tienda/LayoutTienda.jsx'
+import Login from './Login.jsx'
 
 // ESQUELETO (Sprint 02). Rutas del panel; el prefijo /panel lo pone el basename de main.jsx.
 // Cada vista nueva agrega UNA línea dentro de su rama y vive en su propio archivo.
@@ -13,6 +14,9 @@ import LayoutTienda from './tienda/LayoutTienda.jsx'
 export default function App() {
   return (
     <Routes>
+      {/* Login propio del panel: /panel/login. Solo encargados y administradores; el alumno usa Android. */}
+      <Route path="login" element={<Login />} />
+
       {/* Panel de administración: /panel/admin/... */}
       <Route path="admin" element={<RutaPorRol rol="administrador" />}>
         <Route element={<LayoutAdmin />}>

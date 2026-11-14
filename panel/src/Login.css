@@ -1,0 +1,59 @@
+/* Login del panel: una tarjeta centrada. El panel no tiene versión móvil, pero la tarjeta no se rompe en pantallas chicas. */
+.login-panel {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.login-panel__tarjeta {
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-surface-container);
+}
+
+.login-panel__marca {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.login-panel__subtitulo {
+  margin: 0 0 24px;
+  color: var(--color-on-surface-variant);
+}
+
+.login-panel__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-panel__ver {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -8px;
+  font-size: 14px;
+}
+
+.login-panel__error {
+  margin: 0;
+  color: var(--color-error);
+}
+
+.login-panel__aviso {
+  margin: 0;
+  padding: 12px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-tertiary-container);
+  color: var(--color-on-surface);
+}
+
+.login-panel__nota {
+  margin: 24px 0 0;
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+}

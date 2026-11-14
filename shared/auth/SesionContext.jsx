@@ -10,7 +10,7 @@ export function SesionProvider({ children }) {
   const [sesion, setSesion] = useState(leerSesion)
 
   // Si el cliente HTTP recibe un 401 con token (sesión vencida o revocada), aquí se limpia el estado
-  // y RutaProtegida manda al login. Se deja de escuchar al desmontar.
+  // y RutaPorRol manda al login. Se deja de escuchar al desmontar.
   useEffect(() => alExpirarSesion(() => setSesion(null)), [])
 
   // Recibe lo que devuelve POST /auth/login (o /auth/verificar): { token, usuario }.
