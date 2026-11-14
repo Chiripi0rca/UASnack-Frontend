@@ -15,24 +15,25 @@ import './ConfiguraPagos.css'
 const CLAVE = ['tienda', 'pagos', 'estado']
 
 // Lo que se le dice al encargado en cada estado. El estado lo decide el servidor (con lo que avisa Stripe);
-// aquí solo se elige el texto y el color.
+// aquí solo se elige el texto y el color. Al encargado no se le nombra la tecnología: se habla de su
+// "cuenta de banco" y del "proveedor de pagos".
 const ESTADOS = {
   verificado: {
-    titulo: 'Tu cuenta está verificada',
+    titulo: 'Tu cuenta de banco está verificada',
     mensaje:
-      'Ya puedes recibir pedidos. Stripe deposita el dinero de tus ventas en tu cuenta bancaria.',
+      'Ya puedes recibir pedidos. El dinero de tus ventas se deposita en tu cuenta de banco.',
     boton: null,
   },
   pendiente: {
-    titulo: 'Tu cuenta todavía no está verificada',
+    titulo: 'Tu cuenta de banco todavía no está verificada',
     mensaje:
-      'Mientras no esté verificada, tu tienda no recibe pedidos. Si ya terminaste el alta, Stripe puede tardar un poco en revisarla.',
-    boton: 'Configurar mi cuenta en Stripe',
+      'Mientras no esté verificada, tu tienda no recibe pedidos. Si ya terminaste de llenar tus datos, la revisión puede tardar un poco.',
+    boton: 'Configurar mi cuenta de banco',
   },
   rechazado: {
-    titulo: 'Stripe no pudo verificar tu cuenta',
-    mensaje: 'Tu tienda no recibe pedidos. Revisa tus datos en Stripe y vuelve a enviarlos.',
-    boton: 'Revisar mis datos en Stripe',
+    titulo: 'No pudimos verificar tu cuenta de banco',
+    mensaje: 'Tu tienda no recibe pedidos. Revisa tus datos y vuelve a enviarlos.',
+    boton: 'Revisar mis datos',
   },
 }
 
@@ -54,9 +55,9 @@ export default function ConfiguraPagos() {
     <section>
       <h1>Configura tus pagos</h1>
       <p className="configura-pagos__ayuda">
-        El dinero de cada pedido llega directo a la cuenta bancaria de tu tienda. Tus datos (RFC,
-        identificación y cuenta bancaria) los capturas en el formulario de Stripe: UASnack nunca los
-        ve ni los guarda.
+        El dinero de cada pedido llega directo a la cuenta de banco de tu tienda. Tus datos (RFC,
+        identificación y cuenta de banco) los capturas en un formulario seguro de nuestro proveedor
+        de pagos: UASnack nunca los ve ni los guarda.
       </p>
 
       {consulta.isPending && <EstadoCarga mensaje="Revisando tu cuenta…" />}
